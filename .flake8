@@ -1,0 +1,7 @@
+[flake8]
+exclude = */migrations/
+max-complexity = 10
+max-line-length = 79
+import-order-style = google
+style = PEP8
+profile = google
