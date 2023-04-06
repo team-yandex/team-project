@@ -1,0 +1,9 @@
+[flake8]
+exclude = .git,.github,__pycache__,*/migrations/,venv/
+max-complexity = 10
+max-line-length = 79
+import-order-style = google
+style = PEP8
+profile = google
+per-file-ignores =
+    whn/manage.py:Q000
