@@ -40,23 +40,23 @@ source venv/bin/activate
 
 Windows:
 ```bash
-pip install -r requirements.txt
+pip install -r requirements/requirements.txt
 ```
 Mac, Linux:
 ```bash
-pip3 install -r requirements.txt
+pip3 install -r requirements/requirements.txt
 ```
 
 For development:
 
 ```
-requirements-dev.txt
+requirements/requirements-dev.txt
 ```
 
 For testing:
 
 ```
-requirements-test.txt
+requirements/requirements-test.txt
 ```
 
 ### Configure
