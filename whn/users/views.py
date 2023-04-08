@@ -88,7 +88,7 @@ class UsersList(ListView):
     queryset = (
         User.objects.get_queryset()
         .filter(is_active=True)
-        .order_by(User.username.field.name)
+        .order_by(f'-{User.score.field.name}')
         .only(
             User.username.field.name,
             User.first_name.field.name,
@@ -97,7 +97,7 @@ class UsersList(ListView):
             User.score.field.name,
         )
     )
-    template_name = 'users/users_list.html'
+    template_name = 'users/leaderboard.html'
     context_object_name = 'users'
 
 
@@ -123,8 +123,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         user = get_object_or_404(
-            User.objects.get_queryset()
-            .only(
+            User.objects.get_queryset().only(
                 User.username.field.name,
                 User.email.field.name,
                 User.first_name.field.name,
@@ -146,8 +145,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         user = get_object_or_404(
-            User.objects.get_queryset()
-            .only(
+            User.objects.get_queryset().only(
                 User.username.field.name,
                 User.email.field.name,
                 User.first_name.field.name,

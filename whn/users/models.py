@@ -1,16 +1,12 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django_cleanup.signals import cleanup_pre_delete
+from sorl.thumbnail import delete, get_thumbnail
 
-from core.models import ImageBaseModel
 # from game.models import Session
-from .managers import UserManager
 
 
-# class Session(models.Model):
-#     pass
-
-
-class User(ImageBaseModel, AbstractUser):
+class User(AbstractUser):
     image = models.ImageField(
         'аватарка',
         upload_to='media/%Y/%m/',
@@ -35,11 +31,18 @@ class User(ImageBaseModel, AbstractUser):
     #     help_text='В какой игре сейчас находится пользователь.',
     # )
 
-    # objects = UserManager
-
     class Meta:
         verbose_name = 'пользователь'
         verbose_name_plural = 'пользователи'
+
+    @property
+    def get_image_300x300(self):
+        return get_thumbnail(self.image, '300x300', crop='center', quality=51)
+
+    def sorl_delete(**kwargs):
+        delete(kwargs['file'])
+
+    cleanup_pre_delete.connect(sorl_delete)
 
     def __str__(self):
         return self.get_username()
