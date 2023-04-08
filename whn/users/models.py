@@ -3,7 +3,7 @@ from django.db import models
 from django_cleanup.signals import cleanup_pre_delete
 from sorl.thumbnail import delete, get_thumbnail
 
-from game.models import Session
+# from game.models import Session
 
 
 class User(AbstractUser):
@@ -22,14 +22,14 @@ class User(AbstractUser):
         default=0,
         help_text='Количество очков.',
     )
-    session_id = models.ForeignKey(
-        Session,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        verbose_name='сессия',
-        help_text='В какой игре сейчас находится пользователь.',
-    )
+    # session_id = models.ForeignKey(
+    #     Session,
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    #     blank=True,
+    #     verbose_name='сессия',
+    #     help_text='В какой игре сейчас находится пользователь.',
+    # )
 
     class Meta:
         verbose_name = 'пользователь'
