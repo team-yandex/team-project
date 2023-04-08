@@ -1,5 +1,6 @@
 [![build](https://github.com/team-yandex/team-project/actions/workflows/build.yml/badge.svg)](https://github.com/team-yandex/team-project/actions/workflows/build.yml)
-
+![](https://img.shields.io/badge/django-3.2.18-green)
+![](https://img.shields.io/badge/python-3.9-brightgreen)
 # What happened next?
 
 Угадайте по видео, что будет дальше.
