@@ -1,0 +1,22 @@
+
+#id_rate {
+  list-style: none;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+label {
+  cursor: pointer;
+}
+
+label > input[type="radio"] {
+  display: none;
+}
+
+ .rating-active {
+    filter: invert(79%) sepia(69%) saturate(345%) hue-rotate(354deg) brightness(102%) contrast(94%);
+}
+
+#id_rate_0.rating-active{
+  color: red;
+}

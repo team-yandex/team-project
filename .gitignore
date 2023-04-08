@@ -128,5 +128,10 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# VScode
+# PyCharm, VS Code, mac settings
+.idea/
 .vscode/
+.DS_Store
+
+# cache of media
+/ya/media/cache/
