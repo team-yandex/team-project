@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <title></title>
+    {% include 'includes/head.html' %}
+  </head>
+  <body class="sea-bg">
+    <header class="py-3 px-5">
+      <ul class="nav d-flex justify-content-between col-6 mx-auto">
+        <li class="navbar-item">
+          <img src="{% static 'img/logo_mini.svg' %}" alt="no logo" width="" height="" />
+        </li>
+        <li class="nav-item dropdown">
+          <button class="btn btn-info dropdown-toggle sea-bg" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Меню
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end pink-bg">
+            <li><a class="dropdown-item" href="#">Профиль</a></li>
+            <li><a class="dropdown-item" href="#">Таблица лидеров</a></li>
+            <li><a class="dropdown-item" href="#">Выйти</a></li>
+          </ul>
+        </li>
+      </ul>
+    </header>
+    <main>
+      <div class="container col-6 pt-3">
+        <div class="card" style="">
+          <img src="{% static 'img/mqdefault.jpg' %}" class="card-img-top" alt="...">
+          <div class="card-body lgrey-bg">
+            <h5 class="card-title"></h5>
+            <h2 class="card-text mono">Сможешь угадать, что будет дальше?</h2>
+            <div class="d-flex ans-box justify-content-around">
+              <button href="" class="btn btn-ans fst-ans">Ничего не случится</button>
+              <button href="" class="btn btn-ans scd-ans">Появится дракон</button>
+              <button href="" class="btn btn-ans trd-ans">Дом исчезнет</button>
+              <button href="" class="btn btn-ans fth-ans">Тык</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    {% include 'includes/footer.html' %}
+    <script src="{% static 'js/jquery-3.6.4.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+  </body>
+</html>
