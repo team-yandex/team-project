@@ -5,3 +5,4 @@ flake8-quotes~=3.3.2
 
 black~=23.1
 djlint~=1.19.17
+django-debug-toolbar~=4.0.0

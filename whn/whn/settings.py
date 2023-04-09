@@ -19,6 +19,8 @@ else:
     ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost')
 ALLOWED_HOSTS = ALLOWED_HOSTS.split(',')
 
+INTERNAL_IPS = os.getenv('INTERNAL_IPS', ['127.0.0.1'])
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -27,7 +29,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'game.apps.GameConfig',
+    'info.apps.InfoConfig',
 ]
 
 MIDDLEWARE = [
@@ -38,6 +42,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'whn.urls'
@@ -102,9 +107,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+STATICFILES_DIRS = [BASE_DIR / 'static_dev/']
 
 
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
