@@ -4,3 +4,4 @@ flake8-import-order~=0.18.2
 flake8-quotes~=3.3.2
 
 black~=23.1
+djlint~=1.19.17

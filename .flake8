@@ -1,4 +1,5 @@
 [flake8]
+application-import-names = game
 exclude = .git,.github,__pycache__,*/migrations/,venv/
 max-complexity = 10
 max-line-length = 79
