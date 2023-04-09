@@ -9,7 +9,7 @@ class QuestionForm(django.forms.Form):
         queryset=game.models.Choice.objects.none(),
         widget=django.forms.RadioSelect,
         required=True,
-        label='Что будет дальше?'
+        label='Что будет дальше?',
     )
 
     def __init__(self, *args, instance, **kwargs):
