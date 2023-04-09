@@ -2,7 +2,7 @@
 {% load static %}
 <html lang="en">
   <head>
-    <meta name="description" content="my first website"/>
+    <meta name="description" content="whn"/>
     <meta name="keywords" content="game,whn,minecraft,cats"/>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -10,83 +10,15 @@
     {% include 'includes/head.html' %}
   </head>
   <body class="sea-bg">
-    <header class="py-3 px-5">
-      <ul class="nav d-flex justify-content-between col-6 mx-auto">
-        <li class="navbar-item">
-          <img src="{% static 'img/logo_mini.svg' %}"
-               alt="no logo"
-               width=""
-               height=""/>
-        </li>
-        <li class="nav-item dropdown">
-          <button class="btn btn-info dropdown-toggle sea-bg"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false">Меню</button>
-          <ul class="dropdown-menu dropdown-menu-end pink-bg">
-            <li>
-              <a class="dropdown-item" href="#">Профиль</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">Таблица лидеров</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">Выйти</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </header>
+    {% include 'includes/header.html' %}
     <main>
       {% block content %}
-        <div class="container col-6 pt-3">
-          <div class="card">
-            <img src="{% static 'img/mqdefault.jpg' %}" class="card-img-top" alt="..." width="" height="" />
-            <div class="card-body lgrey-bg">
-              <h5 class="card-title"></h5>
-              <h2 class="card-text mono">Сможешь угадать, что будет дальше?</h2>
-              <div class="d-flex ans-box justify-content-around">
-                <button href="" class="btn btn-ans fst-ans">Ничего не случится</button>
-                <button href="" class="btn btn-ans scd-ans">Появится дракон</button>
-                <button type="button"
-                        class="btn btn-ans trd-ans"
-                        data-bs-toggle="modal"
-                        data-bs-target="#signupModal">Дом исчезнет</button>
-                <button href="" class="btn btn-ans fth-ans">Тык</button>
-                <div class="modal fade"
-                     id="signupModal"
-                     tabindex="-1"
-                     aria-labelledby="exampleModalLabel"
-                     aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content sea-bg">
-                      <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Верно!</h1>
-                        <button type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">Вам стоит зарегистрироваться!</div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Нет, спасибо</button>
-                        <button type="button" class="btn fth-ans">
-                          <a class="nav-link" href="{% url 'info:about_page' %}">Давай!</a>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      Контент не завезли
       {% endblock %}
     </main>
     {% include 'includes/footer.html' %}
     <script src="{% static 'js/jquery-3.6.4.js' %}"></script>
     <script src="{% static 'js/popper.js' %}"></script>
     <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
-    <script></script>
   </body>
 </html>

@@ -1,0 +1,29 @@
+{% load static %}
+<header class="py-3 px-5">
+      <ul class="nav d-flex justify-content-between col-6 mx-auto">
+        <li class="navbar-item">
+          <img src="{% static 'img/logo_mini.svg' %}"
+               alt="no logo"
+               width=""
+               height=""/>
+        </li>
+        <li class="nav-item dropdown">
+          <button class="btn btn-info dropdown-toggle sea-bg"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false">Меню</button>
+          <ul class="dropdown-menu dropdown-menu-end pink-bg">
+            <li>
+              <a class="dropdown-item" href="#">Профиль</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Таблица лидеров</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Выйти</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </header>
+
