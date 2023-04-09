@@ -1,8 +1,12 @@
 import django.core.validators
 import django.db.models
 
+import game.managers
+
 
 class Question(django.db.models.Model):
+    objects = game.managers.QuestionManager()
+
     video = django.db.models.FileField(
         'видео',
         help_text='загрузите видео',
@@ -19,17 +23,6 @@ class Question(django.db.models.Model):
     )
     created_on = django.db.models.DateTimeField(auto_now_add=True)
     # TODO: author
-    # related_name нужно переопределить,
-    #  иначе будет ошибка совпадения related полей
-    answer = django.db.models.OneToOneField(
-        'Choice',
-        verbose_name='ответ',
-        help_text='выберете вариант, который является ответом',
-        on_delete=django.db.models.CASCADE,
-        related_name='answered_question',
-        null=True,
-        blank=True,
-    )
     climax_second = django.db.models.PositiveSmallIntegerField(
         'секунда кульминации',
         help_text='введите секунду кульминации',
@@ -51,6 +44,7 @@ class Question(django.db.models.Model):
     class Meta:
         verbose_name = 'вопрос'
         verbose_name_plural = 'вопросы'
+        # TODO: unique together question + choice
 
 
 class Choice(django.db.models.Model):
@@ -64,6 +58,12 @@ class Choice(django.db.models.Model):
         verbose_name='вопрос',
         related_name='choices',
         on_delete=django.db.models.CASCADE,
+    )
+    # TODO: only one correct for question
+    is_correct = django.db.models.BooleanField(
+        'верный ли',
+        help_text='выберете, является ли этот вариант верным',
+        default=False,
     )
 
     class Meta:
