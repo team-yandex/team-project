@@ -30,14 +30,15 @@ class SignUpView(FormView):
         email = form.cleaned_data[self.model.email.field.name]
         mail_text = settings.EMAIL_TEXT_SIGN_UP.format(
             link=self.request.build_absolute_uri(
-                reverse('users:activate', kwargs={'username': username})))
+                reverse('users:activate', kwargs={'username': username})
+            )
+        )
 
         user = form.save()
         user.is_active = settings.IS_ACTIVE
         user.save()
 
         if not settings.IS_ACTIVE:
-
             send_mail(
                 'Yadjango company',
                 mail_text,
