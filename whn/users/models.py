@@ -1,13 +1,15 @@
+import sorl
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django_cleanup.signals import cleanup_pre_delete
 from sorl.thumbnail import delete, get_thumbnail
 
 # from game.models import Session
+from .managers import UserManager
 
 
 class User(AbstractUser):
-    image = models.ImageField(
+    image = sorl.thumbnail.ImageField(
         'аватарка',
         upload_to='media/%Y/%m/',
         blank=True,
@@ -17,7 +19,7 @@ class User(AbstractUser):
             'а вам будет проще определять, в какой аккаунт вы вошли.'
         ),
     )
-    score = models.IntegerField(
+    score = models.PositiveIntegerField(
         'очки',
         default=0,
         help_text='Количество очков.',
@@ -34,6 +36,8 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'пользователь'
         verbose_name_plural = 'пользователи'
+
+    objects = UserManager()
 
     @property
     def get_image_300x300(self):

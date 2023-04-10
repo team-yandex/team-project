@@ -71,10 +71,6 @@ TEMPLATES = [
         },
     },
 ]
-if DEBUG:
-    TEMPLATES[0]['OPTIONS']['context_processors'].append(
-        'django.template.context_processors.debug'
-    )
 
 WSGI_APPLICATION = 'whn.wsgi.application'
 
@@ -132,6 +128,17 @@ MEDIA_URL = '/media/'
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = BASE_DIR / 'send_mail'
 EMAIL_URL = '/uploads/'
+EMAIL_TEXT_SIGN_UP = '''Здравствуйте!
+
+Вы получили это сообщение, так как зарегистрировались на Yadjango.
+
+Для активации своего профиля перейдите по ссылке:
+{link}
+
+Спасибо, что присоединились к нам!
+
+© whn
+'''
 
 MESSAGE_TAGS = {
     message_constants.SUCCESS: 'w-100 alert alert-success text-center',

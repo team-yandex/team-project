@@ -7,7 +7,6 @@ from users.models import User
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     model = User
-    # readonly_fields = ('password',)
     list_display = (
         'username',
         'email',

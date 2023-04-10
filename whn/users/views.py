@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
-from django.http import Http404
+from django.http import HttpResponseGone
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.urls import reverse_lazy
@@ -28,24 +28,16 @@ class SignUpView(FormView):
     def form_valid(self, form):
         username = form.cleaned_data[self.model.username.field.name]
         email = form.cleaned_data[self.model.email.field.name]
+        mail_text = settings.EMAIL_TEXT_SIGN_UP.format(
+            link=self.request.build_absolute_uri(
+                reverse('users:activate', kwargs={'username': username})))
 
         user = form.save()
         user.is_active = settings.IS_ACTIVE
         user.save()
 
         if not settings.IS_ACTIVE:
-            mail_text = f"""Здравствуйте!
 
-Вы получили это сообщение, так как зарегистрировались на Yadjango.
-
-Для активации своего профиля перейдите по ссылке:
-{self.request.build_absolute_uri(reverse('users:activate',
-                                         kwargs={'username': username}))}
-
-Спасибо, что присоединились к нам!
-
-© Yadjango
-"""
             send_mail(
                 'Yadjango company',
                 mail_text,
@@ -65,7 +57,7 @@ class Activate(TemplateView):
         user = get_object_or_404(
             self.model.objects.get_queryset(),
             username=self.kwargs['username'],
-            is_active=0,
+            is_active=False,
         )
 
         is_link_expired = timezone.now() - user.date_joined > timedelta(
@@ -73,7 +65,7 @@ class Activate(TemplateView):
         )
 
         if is_link_expired:
-            raise Http404('Link expired')
+            HttpResponseGone('Link expired')
 
         user.is_active = 1
         user.save()
@@ -86,9 +78,7 @@ class Activate(TemplateView):
 
 class UsersList(ListView):
     queryset = (
-        User.objects.get_queryset()
-        .filter(is_active=True)
-        .order_by(f'-{User.score.field.name}')
+        User.objects.users_queryset()
         .only(
             User.username.field.name,
             User.first_name.field.name,
@@ -96,24 +86,15 @@ class UsersList(ListView):
             User.image.field.name,
             User.score.field.name,
         )
+        .order_by(f'-{User.score.field.name}')
     )
     template_name = 'users/leaderboard.html'
     context_object_name = 'users'
 
 
 class UserDetail(DetailView):
-    queryset = (
-        User.objects.get_queryset()
-        .only(
-            User.username.field.name,
-            User.email.field.name,
-            User.first_name.field.name,
-            User.last_name.field.name,
-            User.image.field.name,
-            User.score.field.name,
-        )
-        .filter(is_active=1)
-    )
+    queryset = User.objects.users_queryset()
+
     template_name = 'users/user_detail.html'
     context_object_name = 'user_pk'
 
@@ -123,16 +104,8 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         user = get_object_or_404(
-            User.objects.get_queryset().only(
-                User.username.field.name,
-                User.email.field.name,
-                User.first_name.field.name,
-                User.last_name.field.name,
-                User.image.field.name,
-                User.score.field.name,
-            ),
+            User.objects.users_queryset(),
             id=request.user.id,
-            is_active=1,
         )
 
         self.form = CustomUserChangeForm(request.POST or None, instance=user)
@@ -145,16 +118,8 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         user = get_object_or_404(
-            User.objects.get_queryset().only(
-                User.username.field.name,
-                User.email.field.name,
-                User.first_name.field.name,
-                User.last_name.field.name,
-                User.image.field.name,
-                User.score.field.name,
-            ),
+            User.objects.users_queryset(),
             id=request.user.id,
-            is_active=1,
         )
 
         self.form = CustomUserChangeForm(request.POST or None, instance=user)
