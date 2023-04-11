@@ -25,6 +25,7 @@ ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', 'default@example.com')
 IS_ACTIVE = (
     os.getenv('IS_ACTIVE', 'True' if DEBUG else 'False').capitalize() == 'True'
 )
+INTERNAL_IPS = os.getenv('INTERNAL_IPS', ['127.0.0.1'])
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,13 +38,11 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'core.apps.CoreConfig',
     'users.apps.UsersConfig',
+    'game.apps.GameConfig',
+    'info.apps.InfoConfig',
 ]
 if DEBUG:
     INSTALLED_APPS.append('debug_toolbar')
-
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -124,6 +123,7 @@ STATIC_ROOT = BASE_DIR / 'static'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
