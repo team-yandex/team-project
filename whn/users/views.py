@@ -134,7 +134,6 @@ class ProfileView(LoginRequiredMixin, TemplateView):
         )
 
         if self.form.is_valid():
-            print(self.form.cleaned_data)
             self.form.save()
 
             messages.success(request, 'Изменения сохранены')
