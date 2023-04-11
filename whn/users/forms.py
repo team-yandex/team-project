@@ -1,14 +1,11 @@
-from django.contrib.auth.forms import (
-    UserChangeForm,
-    UserCreationForm,
-)
+from django.contrib.auth import forms
 
 from core.forms import BootstrapFormMixin
 from .models import User
 
 
-class CustomUserCreationForm(BootstrapFormMixin, UserCreationForm):
-    class Meta(UserCreationForm.Meta):
+class UserCreationForm(BootstrapFormMixin, forms.UserCreationForm):
+    class Meta(forms.UserCreationForm.Meta):
         model = User
         fields = (
             User.username.field.name,
@@ -20,14 +17,14 @@ class CustomUserCreationForm(BootstrapFormMixin, UserCreationForm):
         }
 
 
-class CustomUserChangeForm(BootstrapFormMixin, UserChangeForm):
+class UserChangeForm(BootstrapFormMixin, forms.UserChangeForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields[User.score.field.name].disabled = True
 
     password = None
 
-    class Meta(UserChangeForm.Meta):
+    class Meta(forms.UserChangeForm.Meta):
         model = User
         fields = (
             User.email.field.name,

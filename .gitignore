@@ -134,4 +134,7 @@ dmypy.json
 .DS_Store
 
 # cache of media
-/ya/media/cache/
+/whn/media/cache/
+
+# media (when there are no fixtures)
+/whn/media/

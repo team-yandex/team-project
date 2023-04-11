@@ -7,14 +7,15 @@ from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.http import HttpResponseGone
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import DetailView, FormView, ListView, TemplateView
 
 from .forms import (
-    CustomUserChangeForm,
-    CustomUserCreationForm,
+    UserChangeForm,
+    UserCreationForm,
 )
 from .models import User
 
@@ -22,17 +23,20 @@ from .models import User
 class SignUpView(FormView):
     template_name = 'users/sign_up.html'
     model = User
-    form_class = CustomUserCreationForm
+    form_class = UserCreationForm
     success_url = reverse_lazy('users:profile')
 
     def form_valid(self, form):
         username = form.cleaned_data[self.model.username.field.name]
         email = form.cleaned_data[self.model.email.field.name]
-        mail_text = settings.EMAIL_TEXT_SIGN_UP.format(
-            link=self.request.build_absolute_uri(
+
+        subject_template_name = 'users/email_texts/sign_up.html'
+        context = {
+            'link': self.request.build_absolute_uri(
                 reverse('users:activate', kwargs={'username': username})
             )
-        )
+        }
+        mail_text = render_to_string(subject_template_name, context)
 
         user = form.save()
         user.is_active = settings.IS_ACTIVE
@@ -40,7 +44,7 @@ class SignUpView(FormView):
 
         if not settings.IS_ACTIVE:
             send_mail(
-                'Yadjango company',
+                'Whn',
                 mail_text,
                 settings.ADMIN_EMAIL,
                 [email],
@@ -109,7 +113,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
             id=request.user.id,
         )
 
-        self.form = CustomUserChangeForm(request.POST or None, instance=user)
+        self.form = UserChangeForm(request.POST or None, instance=user)
 
         context = {
             'form': self.form,
@@ -123,7 +127,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
             id=request.user.id,
         )
 
-        self.form = CustomUserChangeForm(request.POST or None, instance=user)
+        self.form = UserChangeForm(request.POST or None, instance=user)
 
         if self.form.is_valid():
             self.form.save()

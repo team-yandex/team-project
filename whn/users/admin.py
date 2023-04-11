@@ -1,11 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from sorl.thumbnail.admin import AdminImageMixin
 
-from users.models import User
+from .models import User
 
 
 @admin.register(User)
-class UserAdmin(BaseUserAdmin):
+class UserAdmin(AdminImageMixin, BaseUserAdmin):
     model = User
     list_display = (
         'username',
