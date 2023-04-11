@@ -113,7 +113,9 @@ class ProfileView(LoginRequiredMixin, TemplateView):
             id=request.user.id,
         )
 
-        self.form = UserChangeForm(request.POST or None, instance=user)
+        self.form = UserChangeForm(
+            request.POST or None, files=request.FILES or None, instance=user
+        )
 
         context = {
             'form': self.form,
@@ -127,9 +129,12 @@ class ProfileView(LoginRequiredMixin, TemplateView):
             id=request.user.id,
         )
 
-        self.form = UserChangeForm(request.POST or None, instance=user)
+        self.form = UserChangeForm(
+            request.POST or None, files=request.FILES or None, instance=user
+        )
 
         if self.form.is_valid():
+            print(self.form.cleaned_data)
             self.form.save()
 
             messages.success(request, 'Изменения сохранены')
