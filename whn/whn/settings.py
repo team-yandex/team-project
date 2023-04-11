@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+from django.contrib.messages import constants as message_constants
 import dotenv
 
 
@@ -19,8 +20,12 @@ else:
     ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost')
 ALLOWED_HOSTS = ALLOWED_HOSTS.split(',')
 
-INTERNAL_IPS = os.getenv('INTERNAL_IPS', ['127.0.0.1'])
+ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', 'default@example.com')
 
+IS_ACTIVE = (
+    os.getenv('IS_ACTIVE', 'True' if DEBUG else 'False').capitalize() == 'True'
+)
+INTERNAL_IPS = os.getenv('INTERNAL_IPS', ['127.0.0.1'])
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -29,9 +34,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_cleanup.apps.CleanupConfig',
+    'sorl.thumbnail',
+    'core.apps.CoreConfig',
+    'users.apps.UsersConfig',
     'game.apps.GameConfig',
     'info.apps.InfoConfig',
 ]
+if DEBUG:
+    INSTALLED_APPS.append('debug_toolbar')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -42,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+if DEBUG:
+    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
 
 ROOT_URLCONF = 'whn.urls'
 
@@ -106,10 +119,24 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [BASE_DIR / 'static_dev/']
-
+STATIC_ROOT = BASE_DIR / 'static'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = BASE_DIR / 'send_mail'
+EMAIL_URL = '/uploads/'
+
+MESSAGE_TAGS = {
+    message_constants.SUCCESS: 'w-100 alert alert-success text-center',
+    message_constants.ERROR: 'w-100 alert alert-danger text-center',
+}
+
+LOGIN_URL = '/auth/login/'
+LOGIN_REDIRECT_URL = '/'
+
+AUTH_USER_MODEL = 'users.User'
