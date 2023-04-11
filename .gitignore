@@ -135,6 +135,3 @@ dmypy.json
 
 # cache of media
 /whn/media/cache/
-
-# media (when there are no fixtures)
-/whn/media/
