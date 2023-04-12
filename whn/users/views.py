@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
+from django.core.paginator import Paginator
 from django.http import HttpResponseGone
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
@@ -25,6 +26,12 @@ class SignUpView(FormView):
     model = User
     form_class = UserCreationForm
     success_url = reverse_lazy('users:profile')
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('users:profile')
+
+        return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
         username = form.cleaned_data[self.model.username.field.name]
@@ -95,6 +102,8 @@ class LeaderBoard(ListView):
     )
     template_name = 'users/leaderboard.html'
     context_object_name = 'users'
+    paginator_class = Paginator
+    paginate_by = settings.PAGINATE_BY
 
 
 class UserDetail(DetailView):

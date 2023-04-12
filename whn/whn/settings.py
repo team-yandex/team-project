@@ -140,3 +140,5 @@ LOGIN_URL = '/auth/login/'
 LOGIN_REDIRECT_URL = '/'
 
 AUTH_USER_MODEL = 'users.User'
+
+PAGINATE_BY = 3

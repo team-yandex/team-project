@@ -10,7 +10,7 @@
         <div class="card mb-3">
           <div class="card-body">
             {% load thumbnail %}
-            {% thumbnail user.image "96x96" crop="center" as im %}
+            {% thumbnail user.image "100x100" crop="center" as im %}
               <img src="{{ im.url }}"
                    width="{{ im.width }}"
                    height="{{ im.height }}"
@@ -22,12 +22,17 @@
 
             {{ user.first_name|safe }}
             {{ user.last_name|safe }}
+
             <br>
+            Количество очков: {{ user.score }}
             <p><a href="{% url 'users:user_detail' user.id %}">
               Подробнее о пользователе</a></p>
           </div>
         </div>
       </div>
     {% endfor %}
+
+    {% include 'users/includes/paginator.html' %}
+
   </div>
 {% endblock %}
