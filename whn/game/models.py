@@ -1,7 +1,12 @@
+import pathlib
+
+import django.core.files
 import django.core.validators
 import django.db.models
+import moviepy.editor
 
 import game.managers
+import game.utils
 
 
 class Question(django.db.models.Model):
@@ -27,6 +32,16 @@ class Question(django.db.models.Model):
         'секунда кульминации',
         help_text='введите секунду кульминации',
     )
+    climax_video = django.db.models.FileField(
+        'видео с кульминацией',
+        auto_created=True,
+        upload_to='video',
+        validators=[
+            django.core.validators.FileExtensionValidator(
+                allowed_extensions=['MOV', 'avi', 'mp4', 'webm', 'mkv']
+            )
+        ],
+    )
 
     class Complexity(django.db.models.IntegerChoices):
         easy = 1, 'легко'
@@ -45,6 +60,29 @@ class Question(django.db.models.Model):
         verbose_name = 'вопрос'
         verbose_name_plural = 'вопросы'
         # TODO: unique together question + choice
+
+    def save(
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
+    ):
+        self.save_climax_video()
+        return super().save(force_insert, force_update, using, update_fields)
+
+    def save_climax_video(self):
+        video_path = pathlib.Path(self.video.path)
+        basename, suffix = video_path.stem, video_path.suffix
+        climax_filename = f'{basename}_climax{suffix}'
+        with django.core.files.temp.NamedTemporaryFile(suffix=suffix) as ntf:
+            with moviepy.editor.VideoFileClip(str(video_path)) as video:
+                trimmed_video = video.subclip(0, self.climax_second)
+                trimmed_video.write_videofile(ntf.name)
+                trimmed_video.close()
+                self.climax_video.save(
+                    climax_filename, django.core.files.File(ntf), save=False
+                )
 
 
 class Choice(django.db.models.Model):

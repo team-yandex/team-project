@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
   <head>
@@ -9,14 +10,15 @@
     <title>Вопрос</title>
   </head>
   <body>
-    <form method="post">
+    <video id="question-video" width="320" height="240" src="" controls muted>
+      Your browser does not support the video tag.
+    </video>
+    <form id="form-id" method="post">
       {% csrf_token %}
-      <video width="320" height="240" controls>
-        <source src="{{ question.video.url }}" type="video/mp4"/>
-        Your browser does not support the video tag.
-      </video>
       {{ form.as_p }}
       <input type="submit" value="Ответить"/>
     </form>
+    {{ question.id|json_script:"question-id" }}
+    <script src="{% static 'js/game/question.js' %}"></script>
   </body>
 </html>

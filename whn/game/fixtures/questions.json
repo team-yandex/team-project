@@ -3,6 +3,7 @@
     "model": "game.question",
     "pk": 1,
     "fields": {
+        "climax_video": "video/Да_ты_че_climax.mp4",
         "video": "video/Да_ты_че.mp4",
         "score": 10,
         "created_on": "2023-04-09T11:50:06.676Z",

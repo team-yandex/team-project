@@ -8,5 +8,12 @@
     <meta name="keywords" content="quiz,video"/>
     <title>Следующий вопрос</title>
   </head>
-  <body>Резульат</body>
+  <body>
+    <div>
+      {{ result }}
+    </div>
+    <div>
+      <a href="{% url 'game:single' %}">сингл</a>
+    </div>
+  </body>
 </html>

@@ -23,12 +23,14 @@ INTERNAL_IPS = os.getenv('INTERNAL_IPS', ['127.0.0.1'])
 
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'game.apps.GameConfig',
     'info.apps.InfoConfig',
 ]
@@ -62,6 +64,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'whn.wsgi.application'
+
+ASGI_APPLICATION = 'whn.asgi.application'
 
 
 DATABASES = {
@@ -113,3 +117,5 @@ MEDIA_URL = '/media/'
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+ANSWER_BUFFER_SECONDS = 5

@@ -1,6 +1,13 @@
+import channels.db
+import channels.routing
+import channels.security.websocket
+import channels.sessions
+import channels.testing
+import django.conf
 import django.test
-import django.urls
+import django.utils
 
+import game.consumers
 import game.forms
 import game.models
 
@@ -18,41 +25,34 @@ class QuestionViewTest(django.test.TestCase):
             pk=cls.QUESTION_ID
         )
         cls.form = game.forms.QuestionForm(instance=cls.question)
+        cls.question_url = django.urls.reverse(
+            'game:question', kwargs=dict(pk=cls.QUESTION_ID)
+        )
 
     def test_form_key_in_context(self):
         """test that key form is in context"""
-        response = django.test.Client().get(
-            django.urls.reverse('game:question', args=[self.QUESTION_ID])
-        )
+        response = django.test.Client().get(self.question_url)
         self.assertIn('form', response.context)
 
     def test_form_in_context_is_questionform(self):
         """test that form in context is instance of QuestionForm"""
-        response = django.test.Client().get(
-            django.urls.reverse('game:question', args=[self.QUESTION_ID])
-        )
+        response = django.test.Client().get(self.question_url)
         form = response.context['form']
         self.assertIsInstance(form, game.forms.QuestionForm)
 
     def test_question_key_in_context(self):
         """test that key question is in context"""
-        response = django.test.Client().get(
-            django.urls.reverse('game:question', args=[self.QUESTION_ID])
-        )
+        response = django.test.Client().get(self.question_url)
         self.assertIn('question', response.context)
 
     def test_correct_question_in_context(self):
         """test that correct question is in context"""
-        response = django.test.Client().get(
-            django.urls.reverse('game:question', args=[self.QUESTION_ID])
-        )
+        response = django.test.Client().get(self.question_url)
         self.assertEqual(response.context['question'].id, self.question.id)
 
     def test_correct_choices_showed(self):
         """test that correct choices showed"""
-        response = django.test.Client().get(
-            django.urls.reverse('game:question', args=[self.QUESTION_ID])
-        )
+        response = django.test.Client().get(self.question_url)
         for choice in self.question.choices.all():
             self.assertContains(response, choice.label)
 
@@ -61,13 +61,70 @@ class QuestionViewTest(django.test.TestCase):
         text_label = self.form.fields['choices'].label
         self.assertEqual(text_label, 'Что будет дальше?')
 
-    def test_redirects_to_results(self):
-        """test after choosing choice redirects to results"""
+    async def test_socket_gives_climax_video_url(self):
+        """test after getting question id socket responding
+        with climax video url"""
+        application = channels.security.websocket.AllowedHostsOriginValidator(
+            channels.sessions.SessionMiddlewareStack(
+                channels.routing.URLRouter(
+                    [
+                        django.urls.re_path(
+                            r'ws/test/session/(?P<session_id>\w+)/$',
+                            game.consumers.QuestionConsumer.as_asgi(),
+                        ),
+                    ]
+                )
+            )
+        )
+        communicator = channels.testing.WebsocketCommunicator(
+            application, f'ws/test/session/{self.QUESTION_ID}/'
+        )
+        await communicator.connect()
+        await communicator.send_json_to({'questionId': self.QUESTION_ID})
+        message = await communicator.receive_json_from()
+        self.assertDictEqual(message, {'url': self.question.climax_video.url})
+        await communicator.disconnect()
+
+    async def test_socket_gives_video_url(self):
+        application = channels.security.websocket.AllowedHostsOriginValidator(
+            channels.sessions.SessionMiddlewareStack(
+                channels.routing.URLRouter(
+                    [
+                        django.urls.re_path(
+                            r'ws/test/session/(?P<session_id>\w+)/$',
+                            game.consumers.QuestionConsumer.as_asgi(),
+                        ),
+                    ]
+                )
+            )
+        )
+        communicator = channels.testing.WebsocketCommunicator(
+            application, f'ws/test/session/{self.QUESTION_ID}/'
+        )
+        await communicator.connect()
+        await communicator.send_json_to({'questionId': self.QUESTION_ID})
+        await communicator.receive_from()  # do nothin with climax video
+        message = await communicator.receive_json_from(
+            timeout=self.question.climax_second
+            + django.conf.settings.ANSWER_BUFFER_SECONDS
+            + 1
+        )
+        self.assertDictEqual(
+            message, {'end': True, 'url': self.question.video.url}
+        )
+        await communicator.disconnect()
+
+    def test_moves_to_results(self):
+        """test after choosing choice moves to results"""
         correct_choice = self.question.choices.filter(is_correct=True).first()
         answer_data = {'choices': correct_choice.id}
-        response = django.test.Client().post(
-            django.urls.reverse('game:question', args=[self.QUESTION_ID]),
+        client = django.test.Client()
+        session = client.session
+        session['start_datetime'] = str(django.utils.timezone.now())
+        session.save()
+        response = client.post(
+            self.question_url,
             data=answer_data,
             follow=True,
         )
-        self.assertRedirects(response, django.urls.reverse('game:result'))
+        self.assertTemplateUsed(response, 'game/result.html')
