@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %} Пользователь {{ user_pk.username }} {% endblock %}
+{% block content %}
+  <div class="container">
+    <div class="col-lg-12">
+      <h2 class="text-center">{{ user_pk.username }}</h2>
+
+      {% if user_pk.image %}
+        {% load thumbnail %}
+        {% thumbnail user_pk.image "300" crop="center" as im %}
+          <img class="my-2"
+               src="{{ im.url }}"
+               width="{{ im.width }}"
+               height="{{ im.height }}"
+               class="rounded float-end"
+               alt="Аватарка">
+        {% endthumbnail %}
+      {% endif %}
+
+      <ul>
+        <li>
+          Email: {{ user_pk.email }}
+        </li>
+        <li>
+          Имя:
+          {% if user_pk.first_name %}
+            {{ user_pk.first_name }}
+          {% else %}
+            <div class="d-inline-block text-muted">-не указано-</div>
+          {% endif %}
+        </li>
+        <li>
+          Фамилия:
+          {% if user_pk.last_name %}
+            {{ user_pk.last_name }}
+          {% else %}
+            <div class="d-inline-block text-muted">-не указано-</div>
+          {% endif %}
+        </li>
+        <li>
+          Количество очков: {{ user_pk.score }}
+        </li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}

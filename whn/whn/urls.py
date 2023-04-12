@@ -1,11 +1,22 @@
+from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from whn.settings import MEDIA_ROOT, MEDIA_URL
 
 
 urlpatterns = [
+    path('auth/', include('users.urls', namespace='users')),
+    path('auth/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('', include('info.urls')),
     path('game/', include('game.urls')),
-] + static(MEDIA_URL, document_root=MEDIA_ROOT)
+]
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns += (path('__debug__/', include(debug_toolbar.urls)),)
+
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+    )

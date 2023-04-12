@@ -7,7 +7,7 @@ exclude = '''
   | __pycache__
   | migrations
   | venv
-  | /ya/manage.py
+  | /whn/manage.py
   | \.github
 )/
 '''

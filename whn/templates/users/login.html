@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %} Вход {% endblock %}
+{% block content %}
+  <div class="container">
+    <h1 class="text-center"> Войти </h1>
+    {% with "Войти" as button_text %}
+      {% include 'includes/form.html' %}
+    {% endwith %}
+    <p></p>
+    <p class="text-center">
+      <a href="{% url 'users:password_reset' %}">
+        Забыли пароль?
+      </a>
+    </p>
+  </div>
+{% endblock %}

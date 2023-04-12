@@ -1,4 +1,0 @@
-django~=3.2
-python-dotenv~=1.0.0
-channels~=4.0.0
-daphne~=4.0.0

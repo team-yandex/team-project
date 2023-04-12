@@ -1,5 +1,6 @@
 [![build](https://github.com/team-yandex/team-project/actions/workflows/build.yml/badge.svg)](https://github.com/team-yandex/team-project/actions/workflows/build.yml)
-
+![](https://img.shields.io/badge/django-3.2.18-green)
+![](https://img.shields.io/badge/python-3.9-brightgreen)
 # What happened next?
 
 Угадайте по видео, что будет дальше.
@@ -8,7 +9,7 @@
 
 ### Clone the repository:
 ```bash
-git clone https://github.com/TheMerret/intensive-django.git
+git clone https://github.com/team-yandex/team-project.git
 ```
 
 ### Create a virtual environment:
@@ -26,10 +27,7 @@ python3 -m venv venv
 
 Windows:
 ```bash
-cd venv/Scripts/
-```
-```bash
-.\activate
+.\venv\Scripts\activate.bat
 ```
 Mac, Linux:
 ```bash
@@ -37,27 +35,13 @@ source venv/bin/activate
 ```
 
 ### Install dependencies:
-
-Windows:
+Перейти в папку requirements: 
 ```bash
-pip install -r requirements/requirements.txt
+cd requirements
 ```
-Mac, Linux:
-```bash
-pip3 install -r requirements/requirements.txt
-```
-
-For development:
-
-```
-requirements/requirements-dev.txt
-```
-
-For testing:
-
-```
-requirements/requirements-test.txt
-```
+- Основной - для запуска сервера: ```pip install -r requirements-prod.txt```
+- Дополнительный - для тестов: ```pip install -r requirements-test.txt```
+- Дополнительный - для разработки: ```pip install -r requirements-dev.txt``` 
 
 ### Configure
 
@@ -87,6 +71,11 @@ Mac, Linux:
 ```bash
 python3 manage.py runserver
 ```
+
+## ER диаграмма моделей
+https://app.quickdatabasediagrams.com/#/d/YbqEiX  
+(вставить картинку)
+
 ## For developers
 
 [Django](https://docs.djangoproject.com/en/3.2/) documentation
