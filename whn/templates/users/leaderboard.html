@@ -9,16 +9,14 @@
       <div class="container mb-3">
         <div class="card mb-3">
           <div class="card-body">
-            {% if user.image %}
-              {% load thumbnail %}
-              {% thumbnail user.image "100x100" crop="center" as im %}
-                <img src="{{ im.url }}"
-                     width="{{ im.width }}"
-                     height="{{ im.height }}"
-                     class="rounded float-end"
-                     alt="Аватарка">
-              {% endthumbnail %}
-            {% endif %}
+            {% load thumbnail %}
+            {% thumbnail user.image "96x96" crop="center" as im %}
+              <img src="{{ im.url }}"
+                   width="{{ im.width }}"
+                   height="{{ im.height }}"
+                   class="rounded float-end"
+                   alt="Аватарка">
+            {% endthumbnail %}
 
             <h5 class="card-title">{{ user.username }}</h5>
 

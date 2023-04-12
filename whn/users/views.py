@@ -81,7 +81,7 @@ class Activate(TemplateView):
         return render(request, self.template_name, context)
 
 
-class UsersList(ListView):
+class LeaderBoard(ListView):
     queryset = (
         User.objects.users_queryset()
         .only(
