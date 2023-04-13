@@ -15,7 +15,7 @@ questionSocket.onopen = function(e) {
 questionSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
     if (data.hasOwnProperty('end') && data.end) {
-        const form = document.querySelector('#form-id');
+        const form = document.querySelector('#card-body-id');
         form.parentNode.removeChild(form);
         const video = document.querySelector('#question-video');
         video.src = data.url;

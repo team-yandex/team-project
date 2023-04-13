@@ -1,19 +1,22 @@
-<!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content=""/>
-    <meta name="keywords" content="quiz,video"/>
-    <title>Следующий вопрос</title>
-  </head>
-  <body>
-    <div>
-      {{ result }}
+{% extends 'base.html' %}
+{% block content %}
+  <div class="modal modal-sheet position-static d-block py-5"
+       tabindex="-1"
+       role="dialog"
+       id="modalSheet">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content rounded-4 shadow lgrey-bg">
+        <div class="modal-header border-bottom-0">
+          <h1 class="modal-title fs-5">Вы ответили на вопрос</h1>
+        </div>
+        <div class="modal-body py-0">
+          Результат: {{ result }}
+        </div>
+        <div class="modal-footer flex-column border-top-0">
+          <a href="{% url 'game:single' %}"
+             class="btn btn-lg pink-bg w-100 mx-0">Заново</a>
+        </div>
+      </div>
     </div>
-    <div>
-      <a href="{% url 'game:single' %}">сингл</a>
-    </div>
-  </body>
-</html>
+  </div>
+{% endblock content %}
