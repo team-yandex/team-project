@@ -17,7 +17,6 @@ class QuestionConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
 
     async def connect(self):
         self.session_id = self.scope['url_route']['kwargs']['session_id']
-        print('hello')  # noqa
         await asgiref.sync.sync_to_async(self.scope['session'].__setitem__)(
             'start_datetime', str(django.utils.timezone.now())
         )
