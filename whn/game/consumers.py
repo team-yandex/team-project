@@ -23,6 +23,7 @@ class QuestionConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
         )
         await asgiref.sync.sync_to_async(self.scope['session'].save)()
         await self.accept()
+        print('accepted')  # noqa
 
     async def receive(self, text_data):
         data = json.loads(text_data)
