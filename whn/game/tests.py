@@ -18,9 +18,10 @@ import game.forms
 import game.models
 
 
-class QuestionViewTest(django.test.TestCase):
+class QuestionViewTest(django.test.SimpleTestCase):
     """test question view"""
 
+    databases = '__all__'
     fixtures = ['questions.json']
     QUESTION_ID = 1
 
