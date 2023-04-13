@@ -29,7 +29,6 @@ class QuestionConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
         if self.question is None:
             # first message is question id
             # TODO: handle if there is no questionId
-            print("hello question")  # noqa
             question_id = data['questionId']
             self.question = await channels.db.database_sync_to_async(
                 self.get_question
