@@ -33,6 +33,20 @@ class QuestionViewTest(django.test.TestCase):
         cls.question_url = django.urls.reverse(
             'game:question', kwargs=dict(pk=cls.QUESTION_ID)
         )
+        cls.application = (
+            channels.security.websocket.AllowedHostsOriginValidator(
+                channels.sessions.SessionMiddlewareStack(
+                    channels.routing.URLRouter(
+                        [
+                            django.urls.re_path(
+                                r'ws/test/session/(?P<session_id>\w+)/$',
+                                game.consumers.QuestionConsumer.as_asgi(),
+                            ),
+                        ]
+                    )
+                )
+            )
+        )
 
     def test_form_key_in_context(self):
         """test that key form is in context"""
@@ -69,20 +83,8 @@ class QuestionViewTest(django.test.TestCase):
     async def test_socket_gives_climax_video_url(self):
         """test after getting question id socket responding
         with climax video url"""
-        application = channels.security.websocket.AllowedHostsOriginValidator(
-            channels.sessions.SessionMiddlewareStack(
-                channels.routing.URLRouter(
-                    [
-                        django.urls.re_path(
-                            r'ws/test/session/(?P<session_id>\w+)/$',
-                            game.consumers.QuestionConsumer.as_asgi(),
-                        ),
-                    ]
-                )
-            )
-        )
         communicator = channels.testing.WebsocketCommunicator(
-            application, f'ws/test/session/{self.QUESTION_ID}/'
+            self.application, f'ws/test/session/{self.QUESTION_ID}/'
         )
         await communicator.connect()
         await communicator.send_json_to({'questionId': self.QUESTION_ID})
@@ -90,30 +92,15 @@ class QuestionViewTest(django.test.TestCase):
         self.assertDictEqual(message, {'url': self.question.climax_video.url})
         await communicator.disconnect()
 
+    @django.test.override_settings(ANSWER_BUFFER_SECONDS=float('-inf'))
     async def test_socket_gives_video_url(self):
-        application = channels.security.websocket.AllowedHostsOriginValidator(
-            channels.sessions.SessionMiddlewareStack(
-                channels.routing.URLRouter(
-                    [
-                        django.urls.re_path(
-                            r'ws/test/session/(?P<session_id>\w+)/$',
-                            game.consumers.QuestionConsumer.as_asgi(),
-                        ),
-                    ]
-                )
-            )
-        )
         communicator = channels.testing.WebsocketCommunicator(
-            application, f'ws/test/session/{self.QUESTION_ID}/'
+            self.application, f'ws/test/session/{self.QUESTION_ID}/'
         )
         await communicator.connect()
         await communicator.send_json_to({'questionId': self.QUESTION_ID})
         await communicator.receive_from()  # do nothin with climax video
-        message = await communicator.receive_json_from(
-            timeout=self.question.climax_second
-            + django.conf.settings.ANSWER_BUFFER_SECONDS
-            + 1
-        )
+        message = await communicator.receive_json_from()
         self.assertDictEqual(
             message, {'end': True, 'url': self.question.video.url}
         )
