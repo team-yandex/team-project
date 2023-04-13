@@ -11,6 +11,7 @@ import django.conf
 import django.core.files
 import django.test
 import django.utils
+import moviepy.editor
 
 import game.consumers
 import game.forms
@@ -135,3 +136,5 @@ class QuestionModelTest(django.test.TestCase):
                 complexity=game.models.Question.Complexity.easy,
             )
             question.save()
+        climax_video = moviepy.editor.VideoFileClip(question.climax_video.path)
+        self.assertEqual(climax_video.duration, climax_second)
