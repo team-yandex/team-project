@@ -87,7 +87,7 @@ class QuestionViewTest(django.test.TestCase):
         communicator = channels.testing.WebsocketCommunicator(
             self.application, f'ws/test/session/{self.QUESTION_ID}/'
         )
-        await communicator.connect()
+        print(await communicator.connect())  # noqa
         await communicator.send_json_to({'questionId': self.QUESTION_ID})
         message = await communicator.receive_json_from()
         self.assertDictEqual(message, {'url': self.question.climax_video.url})
