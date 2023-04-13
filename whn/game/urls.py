@@ -14,4 +14,7 @@ urlpatterns = [
     django.urls.path(
         'result/', game.views.ResultView.as_view(), name='result'
     ),
+    django.urls.path(
+        'single/', game.views.SingleView.as_view(), name='single'
+    ),
 ]

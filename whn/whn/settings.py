@@ -28,12 +28,14 @@ IS_ACTIVE = (
 INTERNAL_IPS = os.getenv('INTERNAL_IPS', ['127.0.0.1'])
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'django_cleanup.apps.CleanupConfig',
     'sorl.thumbnail',
     'core.apps.CoreConfig',
@@ -75,6 +77,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'whn.wsgi.application'
+
+ASGI_APPLICATION = 'whn.asgi.application'
 
 
 DATABASES = {
@@ -126,6 +130,8 @@ MEDIA_URL = '/media/'
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+ANSWER_BUFFER_SECONDS = 5
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = BASE_DIR / 'send_mail'

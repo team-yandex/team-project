@@ -7,7 +7,7 @@ import game.models
 class QuestionForm(django.forms.Form):
     choices = django.forms.ModelChoiceField(
         queryset=game.models.Choice.objects.none(),
-        widget=django.forms.RadioSelect,
+        widget=django.forms.RadioSelect({'hidden': True}),
         required=True,
         label='Что будет дальше?',
     )

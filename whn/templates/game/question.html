@@ -1,22 +1,22 @@
-<!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content=""/>
-    <meta name="keywords" content="quiz,video"/>
-    <title>Вопрос</title>
-  </head>
-  <body>
-    <form method="post">
-      {% csrf_token %}
-      <video width="320" height="240" controls>
-        <source src="{{ question.video.url }}" type="video/mp4"/>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <div class="container col-6 pt-3 mb-3">
+    <div class="card p-3 lgrey-bg">
+      <video id="question-video" width="" height="" src="" controls muted>
         Your browser does not support the video tag.
       </video>
-      {{ form.as_p }}
-      <input type="submit" value="Ответить"/>
-    </form>
-  </body>
-</html>
+      <div id="card-body-id" class="card-body lgrey-bg">
+        <form method="post">
+          {% csrf_token %}
+          <h2 class="card-text mono">{{ form.choices.label }}</h2>
+          <div class="d-flex ans-box justify-content-around">
+            {% for choice in form.choices %}<button class="btn btn-ans trd-ans">{{ choice }}</button>{% endfor %}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {{ question.id|json_script:"question-id" }}
+  <script src="{% static 'js/game/question.js' %}"></script>
+{% endblock content %}
