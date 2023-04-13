@@ -5,11 +5,11 @@ from django.urls import include, path
 
 
 urlpatterns = [
+    path('', include('info.urls')),
+    path('game/', include('game.urls')),
     path('auth/', include('users.urls', namespace='users')),
     path('auth/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-    path('', include('info.urls')),
-    path('game/', include('game.urls')),
 ]
 
 if settings.DEBUG:
