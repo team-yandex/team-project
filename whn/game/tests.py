@@ -1,9 +1,14 @@
+import pathlib
+import tempfile
+
+
 import channels.db
 import channels.routing
 import channels.security.websocket
 import channels.sessions
 import channels.testing
 import django.conf
+import django.core.files
 import django.test
 import django.utils
 
@@ -128,3 +133,18 @@ class QuestionViewTest(django.test.TestCase):
             follow=True,
         )
         self.assertTemplateUsed(response, 'game/result.html')
+
+
+class QuestionModelTest(django.test.TestCase):
+    @django.test.override_settings(MEDIA_ROOT=tempfile.gettempdir())
+    def test_climax_video_created(self):
+        video_path = pathlib.Path('game') / 'fixtures' / 'Да_ты_че.mp4'
+        climax_second = 3
+        with video_path.open(mode='rb') as f:
+            question = game.models.Question(
+                video=django.core.files.File(f, video_path.name),
+                score=5,
+                climax_second=climax_second,
+                complexity=game.models.Question.Complexity.easy,
+            )
+            question.save()

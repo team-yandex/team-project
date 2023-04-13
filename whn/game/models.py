@@ -34,7 +34,7 @@ class Question(django.db.models.Model):
     )
     climax_video = django.db.models.FileField(
         'видео с кульминацией',
-        auto_created=True,
+        editable=False,
         upload_to='video',
         validators=[
             django.core.validators.FileExtensionValidator(
@@ -52,7 +52,9 @@ class Question(django.db.models.Model):
         'сложность', help_text='введите сложность', choices=Complexity.choices
     )
     is_published = django.db.models.BooleanField(
-        'побуликован ли', help_text='укажите опубликоан ли вопрос'
+        'побуликован ли',
+        help_text='укажите опубликоан ли вопрос',
+        default=False,
     )
     # TODO: добавить превью видео для админки.
 
@@ -68,7 +70,13 @@ class Question(django.db.models.Model):
         using=None,
         update_fields=None,
     ):
-        self.save_climax_video()
+        if (
+            update_fields is None
+            or Question.climax_video.field.name in update_fields
+        ):
+            super().save(force_insert, force_update, using, update_fields)
+            self.save_climax_video()
+            return
         return super().save(force_insert, force_update, using, update_fields)
 
     def save_climax_video(self):
