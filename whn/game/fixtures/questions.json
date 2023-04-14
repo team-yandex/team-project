@@ -3,12 +3,116 @@
     "model": "game.question",
     "pk": 1,
     "fields": {
-        "climax_video": "video/Да_ты_че_climax.mp4",
         "video": "video/Да_ты_че.mp4",
         "score": 10,
         "created_on": "2023-04-09T11:50:06.676Z",
         "climax_second": 5,
+        "climax_video": "video/Да_ты_че_climax.mp4",
         "complexity": 1,
+        "is_published": true
+    }
+},
+{
+    "model": "game.question",
+    "pk": 2,
+    "fields": {
+        "video": "video/pingpong.mp4",
+        "score": 7,
+        "created_on": "2023-04-14T14:49:25.097Z",
+        "climax_second": 3,
+        "climax_video": "video/pingpong_climax.mp4",
+        "complexity": 2,
+        "is_published": true
+    }
+},
+{
+    "model": "game.question",
+    "pk": 3,
+    "fields": {
+        "video": "video/milk.mp4",
+        "score": 15,
+        "created_on": "2023-04-14T15:01:00.204Z",
+        "climax_second": 2,
+        "climax_video": "video/milk_climax.mp4",
+        "complexity": 3,
+        "is_published": true
+    }
+},
+{
+    "model": "game.question",
+    "pk": 4,
+    "fields": {
+        "video": "video/granny.mp4",
+        "score": 13,
+        "created_on": "2023-04-14T15:06:44.986Z",
+        "climax_second": 6,
+        "climax_video": "video/granny_climax.mp4",
+        "complexity": 1,
+        "is_published": true
+    }
+},
+{
+    "model": "game.question",
+    "pk": 5,
+    "fields": {
+        "video": "video/basketball.mp4",
+        "score": 9,
+        "created_on": "2023-04-14T15:13:55.328Z",
+        "climax_second": 2,
+        "climax_video": "video/basketball_climax.mp4",
+        "complexity": 2,
+        "is_published": true
+    }
+},
+{
+    "model": "game.question",
+    "pk": 6,
+    "fields": {
+        "video": "video/mouse.mp4",
+        "score": 8,
+        "created_on": "2023-04-14T16:47:27.335Z",
+        "climax_second": 11,
+        "climax_video": "video/mouse_climax.mp4",
+        "complexity": 1,
+        "is_published": true
+    }
+},
+{
+    "model": "game.question",
+    "pk": 7,
+    "fields": {
+        "video": "video/polish.mp4",
+        "score": 16,
+        "created_on": "2023-04-14T16:55:45.726Z",
+        "climax_second": 3,
+        "climax_video": "video/polish_climax.mp4",
+        "complexity": 3,
+        "is_published": true
+    }
+},
+{
+    "model": "game.question",
+    "pk": 8,
+    "fields": {
+        "video": "video/cat.mp4",
+        "score": 8,
+        "created_on": "2023-04-14T16:59:46.037Z",
+        "climax_second": 3,
+        "climax_video": "video/cat_climax.mp4",
+        "complexity": 3,
+        "is_published": true
+    }
+},
+{
+    "model": "game.question",
+    "pk": 9,
+    "fields": {
+        "video": "video/bonk.mp4",
+        "score": 7,
+        "created_on": "2023-04-14T17:07:18.447Z",
+        "climax_second": 4,
+        "climax_video": "video/bonk_climax.mp4",
+        "complexity": 2,
         "is_published": true
     }
 },
@@ -45,6 +149,294 @@
     "fields": {
         "label": "Тык",
         "question": 1,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 5,
+    "fields": {
+        "label": "Попадет по столу",
+        "question": 2,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 6,
+    "fields": {
+        "label": "Попадет в сетку",
+        "question": 2,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 7,
+    "fields": {
+        "label": "Попадет в стену",
+        "question": 2,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 8,
+    "fields": {
+        "label": "Попадет в бабулю",
+        "question": 2,
+        "is_correct": true
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 9,
+    "fields": {
+        "label": "Бутылка продолжит стоять",
+        "question": 3,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 10,
+    "fields": {
+        "label": "Бутылка будет жестко избита",
+        "question": 3,
+        "is_correct": true
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 11,
+    "fields": {
+        "label": "Позеленеет",
+        "question": 3,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 12,
+    "fields": {
+        "label": "Взорвется",
+        "question": 3,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 13,
+    "fields": {
+        "label": "Мусор уберут",
+        "question": 4,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 14,
+    "fields": {
+        "label": "Скамейка будет утилизирована",
+        "question": 4,
+        "is_correct": true
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 15,
+    "fields": {
+        "label": "Манипулятор ничего не захватит",
+        "question": 4,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 16,
+    "fields": {
+        "label": "Бабуля уйдет",
+        "question": 4,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 17,
+    "fields": {
+        "label": "Попадет в кольцо",
+        "question": 5,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 18,
+    "fields": {
+        "label": "Не попадет в кольцо",
+        "question": 5,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 19,
+    "fields": {
+        "label": "Попадет не в кольцо",
+        "question": 5,
+        "is_correct": true
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 20,
+    "fields": {
+        "label": "Не попадет не в кольцо",
+        "question": 5,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 21,
+    "fields": {
+        "label": "Зверек прыгнет",
+        "question": 6,
+        "is_correct": true
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 22,
+    "fields": {
+        "label": "Зверек упадет",
+        "question": 6,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 23,
+    "fields": {
+        "label": "Зверек убежит",
+        "question": 6,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 24,
+    "fields": {
+        "label": "Зверек закричит",
+        "question": 6,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 25,
+    "fields": {
+        "label": "Так и продолжат бегать",
+        "question": 7,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 26,
+    "fields": {
+        "label": "Покрасят под хром",
+        "question": 7,
+        "is_correct": true
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 27,
+    "fields": {
+        "label": "Дед убежит",
+        "question": 7,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 28,
+    "fields": {
+        "label": "Оператор убежит",
+        "question": 7,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 29,
+    "fields": {
+        "label": "Кот лизнет камеру",
+        "question": 8,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 30,
+    "fields": {
+        "label": "Занюхнет камеру",
+        "question": 8,
+        "is_correct": true
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 31,
+    "fields": {
+        "label": "Убежит",
+        "question": 8,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 32,
+    "fields": {
+        "label": "Отпрыгнет",
+        "question": 8,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 33,
+    "fields": {
+        "label": "Попадет по груше",
+        "question": 9,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 34,
+    "fields": {
+        "label": "Палочка выпадет",
+        "question": 9,
+        "is_correct": false
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 35,
+    "fields": {
+        "label": "Попадет себе по лицу",
+        "question": 9,
+        "is_correct": true
+    }
+},
+{
+    "model": "game.choice",
+    "pk": 36,
+    "fields": {
+        "label": "Попадет мимо",
+        "question": 9,
         "is_correct": false
     }
 }
