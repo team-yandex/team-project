@@ -2,6 +2,8 @@ import random
 
 import django.db.models
 
+import game.models
+
 
 class QuestionManager(django.db.models.Manager):
     def published(self):
@@ -9,7 +11,9 @@ class QuestionManager(django.db.models.Manager):
         return (
             self.get_queryset()
             .filter(is_published=True)
-            .prefetch_related('choices')
+            .prefetch_related(
+                game.models.Choice.question.field.remote_field.name
+            )
         )
 
     def random(self):
