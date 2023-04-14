@@ -23,5 +23,5 @@ class QuestionManager(django.db.models.Manager):
         while True:
             pk = random.randint(1, max_id)
             question = self.get_queryset().filter(pk=pk).first()
-            if question:
+            if question and question.is_published:
                 return question

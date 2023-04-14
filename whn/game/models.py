@@ -76,7 +76,6 @@ class Question(django.db.models.Model):
         ):
             super().save(force_insert, force_update, using, update_fields)
             self.save_climax_video()
-            return
         return super().save(force_insert, force_update, using, update_fields)
 
     def save_climax_video(self):
