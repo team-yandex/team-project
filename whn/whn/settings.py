@@ -26,6 +26,7 @@ IS_ACTIVE = (
     os.getenv('IS_ACTIVE', 'True' if DEBUG else 'False').capitalize() == 'True'
 )
 INTERNAL_IPS = os.getenv('INTERNAL_IPS', ['127.0.0.1'])
+SESSION_CRYPTO = os.getenv('SESSION_CRYPTO', 'no crypto')
 
 INSTALLED_APPS = [
     'daphne',
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'game.apps.GameConfig',
     'info.apps.InfoConfig',
+    'session.apps.SessionConfig',
 ]
 if DEBUG:
     INSTALLED_APPS.append('debug_toolbar')

@@ -4,7 +4,6 @@ from django_cleanup.signals import cleanup_pre_delete
 import sorl
 from sorl.thumbnail import delete, get_thumbnail
 
-# from game.models import Session
 from .managers import UserManager
 
 
@@ -24,14 +23,6 @@ class User(AbstractUser):
         default=0,
         help_text='Количество очков.',
     )
-    # session_id = models.ForeignKey(
-    #     Session,
-    #     on_delete=models.SET_NULL,
-    #     null=True,
-    #     blank=True,
-    #     verbose_name='сессия',
-    #     help_text='В какой игре сейчас находится пользователь.',
-    # )
 
     class Meta:
         verbose_name = 'пользователь'
