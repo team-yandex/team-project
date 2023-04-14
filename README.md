@@ -79,3 +79,30 @@ https://app.quickdatabasediagrams.com/#/d/YbqEiX
 ## For developers
 
 [Django](https://docs.djangoproject.com/en/3.2/) documentation
+
+### Custom commands
+
+#### `initdata`
+
+If you want to populate your fresh db with fixtures and superuser creditinals you can use
+
+Windows:
+```bash
+python manage.py initdata
+```
+Mac, Linux:
+```bash
+python3 manage.py initdata
+```
+
+This command will check migrations and if there are pending ones you can apply them in place.
+
+After that command will create superuser with creditinals defined in enviroment variables like
+
+```
+DJANGO_SUPERUSER_USERNAME = admin
+DJANGO_SUPERUSER_EMAIL = admin@email.com
+DJANGO_SUPERUSER_PASSWORD = superuserpassword
+```
+
+You could input all your creditinal from stdin if you haven't specified settings in enviroment variables. 
