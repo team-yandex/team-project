@@ -4,13 +4,11 @@
 <div class="form-group col-sm-5 mx-auto mb-2">
 
   {% if messages %}
-    <div class="">
-      <p></p>
-      {% for message in messages %}
-        <h4{% if message.tags %}
-          class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
-      {% endfor %}
-    </div>
+    <p></p>
+    {% for message in messages %}
+      <h4{% if message.tags %}
+        class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
+    {% endfor %}
   {% endif %}
 
   <form method="post" enctype="multipart/form-data">
@@ -23,7 +21,7 @@
       {% endfor %}
 
       {{ field.label_tag }}
-      {% if user_me.image and 'Аватарка' in field.label_tag %}
+      {% if view_name == 'users:users_list' and 'Аватарка' in field.label_tag %}
         {% thumbnail user_me.image "300" crop="center" as im %}
           <img class="my-2"
                src="{{ im.url }}"
