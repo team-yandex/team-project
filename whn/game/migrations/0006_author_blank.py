@@ -10,13 +10,11 @@ import django.db.models.deletion
 def create_superuser():
     superuser_env_variables = [
         "DJANGO_SUPERUSER_USERNAME",
-        "DJANGO_SUPERUSER_EMAIL",
         "DJANGO_SUPERUSER_PASSWORD",
     ]
     is_superuser_prompt_interactive = not all(
         environ.get(var) for var in superuser_env_variables
     )
-    print(is_superuser_prompt_interactive)
     call_command(
         "createsuperuser",
         interactive=is_superuser_prompt_interactive,
