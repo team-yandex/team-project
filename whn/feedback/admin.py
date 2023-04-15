@@ -5,12 +5,11 @@ from .models import Feedback, FeedbackAuther, FeedbackFile
 
 class FeedbackAutherInline(admin.TabularInline):
     model = FeedbackAuther
-    fields = ('name', 'email')
+    can_delete = False
 
 
 class FeedbackFileInline(admin.TabularInline):
     model = FeedbackFile
-    fields = ('file',)
 
 
 @admin.register(Feedback)

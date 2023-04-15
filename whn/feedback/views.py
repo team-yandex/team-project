@@ -1,12 +1,11 @@
 from django.conf import settings
 from django.contrib import messages
 from django.core.mail import send_mail
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
-from django.urls import reverse
 from django.views.generic import TemplateView
 
-from .forms import FeedbackForm, FeedbackAutherForm, FeedbackFileForm
+from .forms import FeedbackAutherForm, FeedbackFileForm, FeedbackForm
 from .models import Feedback, FeedbackAuther, FeedbackFile
 
 
@@ -20,6 +19,7 @@ class FeedbackView(TemplateView):
             request.POST or None,
             files=request.FILES or None,
         )
+
         context = {
             'feedback_auther': feedback_auther,
             'feedback_form': feedback_form,
@@ -38,16 +38,14 @@ class FeedbackView(TemplateView):
 
         forms = (feedback_auther, feedback_form, files_form)
 
-        if request.POST == 'POST' and all(form.is_valid() for form in forms):
-            text = feedback_form.cleaned_data[self.model.text.field.name]
-            email = feedback_auther.cleaned_data[self.model.email.field.name]
+        if all(form.is_valid() for form in forms):
+            text = feedback_form.cleaned_data[Feedback.text.field.name]
+            email = feedback_auther.cleaned_data[
+                FeedbackAuther.email.field.name
+            ]
 
             subject_template_name = 'feedback/email_texts/feedback.html'
-            context = {
-                'link': self.request.build_absolute_uri(
-                    reverse('users:activate', kwargs={'text': text})
-                )
-            }
+            context = {'text': text}
             mail_text = render_to_string(subject_template_name, context)
             send_mail(
                 'Whn',
@@ -60,12 +58,10 @@ class FeedbackView(TemplateView):
             feedback_item = Feedback.objects.create(
                 **feedback_form.cleaned_data
             )
-            feedback_item.save()
-            feedback_item = FeedbackAuther.objects.create(
+            FeedbackAuther.objects.create(
                 feedback=feedback_item,
                 **feedback_auther.cleaned_data,
             )
-            feedback_item.save()
             for file in request.FILES.getlist(FeedbackFile.file.field.name):
                 FeedbackFile.objects.create(
                     file=file,
@@ -75,3 +71,10 @@ class FeedbackView(TemplateView):
             messages.success(request, 'Отзыв отправлен. Спасибо!')
 
             return redirect('feedback:feedback')
+
+        context = {
+            'feedback_auther': feedback_auther,
+            'feedback_form': feedback_form,
+            'files_form': files_form,
+        }
+        return render(request, self.template_name, context)
