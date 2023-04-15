@@ -16,6 +16,7 @@ def create_superuser():
     is_superuser_prompt_interactive = not all(
         environ.get(var) for var in superuser_env_variables
     )
+    print(is_superuser_prompt_interactive)
     call_command(
         "createsuperuser",
         interactive=is_superuser_prompt_interactive,
