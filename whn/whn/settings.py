@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'sorl.thumbnail',
     'core.apps.CoreConfig',
+    'feedback.apps.FeedbackConfig',
     'users.apps.UsersConfig',
     'game.apps.GameConfig',
     'info.apps.InfoConfig',
