@@ -4,6 +4,7 @@ from django_cleanup.signals import cleanup_pre_delete
 import sorl
 from sorl.thumbnail import delete, get_thumbnail
 
+from game.models import Question
 from .managers import UserManager
 
 
@@ -22,6 +23,10 @@ class User(AbstractUser):
         'очки',
         default=0,
         help_text='Количество очков.',
+    )
+
+    seen_questions = models.ManyToManyField(
+        Question, verbose_name='пройденные вопросы'
     )
 
     class Meta:

@@ -1,6 +1,5 @@
 import django.forms
 
-
 import game.models
 
 

@@ -38,6 +38,7 @@ class Session(Model):
         'статус',
         help_text='статус комнаты',
         choices=Status.choices,
+        default=Status.UPCOMING,
         max_length=15,
     )
 
@@ -67,3 +68,6 @@ class Session(Model):
                 str(self.id).encode()
             )
         return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return str(self.id)

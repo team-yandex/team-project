@@ -94,3 +94,9 @@ footer {
   border-bottom: 2px outset #AAAAAA;
 }
 
+
+button.btn-ans > label {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}

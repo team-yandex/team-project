@@ -12,18 +12,41 @@ questionSocket.onopen = function(e) {
     questionSocket.send(JSON.stringify({'questionId': questionId}))   
 }
 
+
+
 questionSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
     if (data.hasOwnProperty('end') && data.end) {
         const form = document.querySelector('#card-body-id');
+        document.querySelector('#timer').remove()
+        const button = document.createElement('a');
+        button.className += 'btn btn-trd';
+        button.innerText = 'Заново';
+        // TODO: remove hardcode
+        // possible solution: move js to template and use url templatetag 
+        button.href = 'http://127.0.0.1:8000/game/single/';
+        form.parentNode.appendChild(button);
         form.parentNode.removeChild(form);
         const video = document.querySelector('#question-video');
         video.src = data.url;
         video.play();
     } else if (data.hasOwnProperty('url')) {
+        const block = document.querySelector('#card-body-id').parentNode;
         const video = document.querySelector('#question-video');
         video.src = data.url;
+        var left = 5
+        // TODO: beautify timer
+        const p = document.createElement('p');
+        p.setAttribute('id', 'timer');
+        block.appendChild(p);
         video.play();
+        video.addEventListener('ended', function() {
+            setInterval(function () {
+                if (left == 1) {clearInterval(this);}
+                p.innerText = left;
+                left -= 1;
+            }, 1000)
+        })
     }
 };
 
