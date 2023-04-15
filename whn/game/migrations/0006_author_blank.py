@@ -17,7 +17,7 @@ def create_superuser():
     )
     call_command(
         "createsuperuser",
-        interactive=is_superuser_prompt_interactive,
+        interactive=False,
     )
 
 
