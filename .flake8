@@ -1,5 +1,5 @@
 [flake8]
-application-import-names = core,game,users
+application-import-names = core,feedback,game,users
 exclude = .git,.github,__pycache__,*/migrations/,venv/
 max-complexity = 10
 max-line-length = 79

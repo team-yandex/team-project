@@ -2,10 +2,12 @@
 <header class="py-3 px-5">
   <ul class="nav d-flex justify-content-between col-6 mx-auto">
     <li class="navbar-item">
-      <img src="{% static 'img/logo_mini.svg' %}"
-           alt="no logo"
-           width=""
-           height=""/>
+      <a href="{% url 'info:index_page' %}">
+        <img src="{% static 'img/logo_mini.svg' %}"
+             alt="no logo"
+             width=""
+             height=""/>
+      </a>
     </li>
     <li class="nav-item dropdown">
       <button class="btn btn-info dropdown-toggle sea-bg"
@@ -14,17 +16,29 @@
               aria-expanded="false">Меню</button>
       <ul class="dropdown-menu dropdown-menu-end pink-bg">
         <li>
-          <a class="dropdown-item" href="{% url 'users:profile' %}">Профиль</a>
+          <a class="dropdown-item" href="{% url 'info:about_page' %}">О проекте</a>
         </li>
         <li>
-          <a class="dropdown-item" href="#">Таблица лидеров</a>
+          <a class="dropdown-item" href="{% url 'users:leaderboard' %}">Таблица лидеров</a>
         </li>
         <li>
           <a class="dropdown-item" href="{% url 'game:single' %}">Сингл</a>
         </li>
         <li>
-          <a class="dropdown-item" href="{% url 'users:logout' %}">Выйти</a>
+          <a class="dropdown-item" href="{% url 'info:about_page' %}">О проекте</a>
         </li>
+        {% if request.user.is_authenticated %}
+          <li>
+            <a class="dropdown-item" href="{% url 'users:profile' %}">Профиль</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="{% url 'users:logout' %}">Выйти</a>
+          </li>
+        {% else %}
+          <li>
+            <a class="dropdown-item" href="{% url 'users:login' %}">Войти</a>
+          </li>
+        {% endif %}
       </ul>
     </li>
   </ul>
