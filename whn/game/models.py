@@ -91,7 +91,8 @@ class Question(django.db.models.Model):
         ):
             complexity = {1: 'easy', 2: 'medium', 3: 'hard'}[self.complexity]
             self.score = django.conf.settings.SCORES[complexity]
-            update_fields.append(Question.score.field.name)
+            if update_fields is not None:
+                update_fields.append(Question.score.field.name)
         super().save(force_insert, force_update, using, update_fields)
         if self.is_published:
             unique_choices_count = (
