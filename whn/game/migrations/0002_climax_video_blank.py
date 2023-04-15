@@ -5,9 +5,11 @@ from django.db import migrations, models
 
 
 def create_climax_videos(apps, schema_editor):
+    import game.models
+    
     Question = apps.get_model('game', 'Question')
     for question in Question.objects.all():
-        question.save()
+        game.models.Question.save(question)
 
 
 class Migration(migrations.Migration):
@@ -22,5 +24,5 @@ class Migration(migrations.Migration):
             name='climax_video',
             field=models.FileField(auto_created=True, blank=True, null=True, upload_to='video', validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['MOV', 'avi', 'mp4', 'webm', 'mkv'])], verbose_name='видео с кульминацией'),
         ),
-        migrations.RunPython(create_climax_videos, reverse_code=lambda apps, schema_editor: ()),
+        migrations.RunPython(create_climax_videos, reverse_code=migrations.RunPython.noop),
     ]
