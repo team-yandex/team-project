@@ -25,6 +25,9 @@
           <a class="dropdown-item" href="{% url 'game:single' %}">Сингл</a>
         </li>
         <li>
+          <a class="dropdown-item" href="{% url 'feedback:feedback' %}">Обратная связь</a>
+        </li>
+        <li>
           <a class="dropdown-item" href="{% url 'info:about_page' %}">О проекте</a>
         </li>
         {% if request.user.is_authenticated %}
