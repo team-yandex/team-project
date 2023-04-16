@@ -71,9 +71,7 @@ class Activate(TemplateView):
             username=self.kwargs['username'],
             is_active=False,
         )
-        timedelta_ago_joined = (
-            user.date_joined - timezone.localtime()
-        )
+        timedelta_ago_joined = user.date_joined - timezone.localtime()
         timedelta_ago_joined -= timedelta(
             microseconds=timedelta_ago_joined.microseconds
         )
