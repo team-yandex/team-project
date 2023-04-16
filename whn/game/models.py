@@ -1,5 +1,6 @@
 import pathlib
 
+import django.conf
 import django.core.exceptions
 import django.core.files
 import django.core.validators
@@ -27,6 +28,7 @@ class Question(django.db.models.Model):
     score = django.db.models.PositiveIntegerField(
         'очки',
         help_text='введите очки за данный вопрос',
+        editable=False,
     )
     created_on = django.db.models.DateTimeField(auto_now_add=True)
     author = django.db.models.ForeignKey(
@@ -35,8 +37,6 @@ class Question(django.db.models.Model):
         help_text='укажите автора вопроса',
         related_name='questions',
         on_delete=django.db.models.CASCADE,
-        null=True,
-        blank=True,
     )
     climax_second = django.db.models.PositiveSmallIntegerField(
         'секунда кульминации',
@@ -85,6 +85,14 @@ class Question(django.db.models.Model):
         ):
             super().save(force_insert, force_update, using, update_fields)
             self.save_climax_video()
+        if (
+            update_fields is None
+            or Question.complexity.field.name in update_fields
+        ):
+            complexity = {1: 'easy', 2: 'medium', 3: 'hard'}[self.complexity]
+            self.score = django.conf.settings.SCORES[complexity]
+            if update_fields is not None:
+                update_fields.append(Question.score.field.name)
         super().save(force_insert, force_update, using, update_fields)
         if self.is_published:
             unique_choices_count = (

@@ -149,3 +149,9 @@ LOGIN_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'users.User'
 
 PAGINATE_BY = 3
+
+SCORES = {
+    'hard': 15,
+    'medium': 10,
+    'easy': 5,
+}
