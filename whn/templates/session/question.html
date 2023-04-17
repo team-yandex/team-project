@@ -1,12 +1,12 @@
 <div class="card p-3 lgrey-bg">
-  <video id="question-video" width="" height="" src="" controls muted>
+  <video id="question-video" width="" height="500px" src="" muted>
     Your browser does not support the video tag.
   </video>
   <div id="card-body-id" class="card-body lgrey-bg">
-      <h2 class="card-text mono">{{ form.choices.label }}</h2>
-      <div class="d-flex ans-box justify-content-around">
-        <!-- {% for choice in form.choices %}<button class="btn btn-ans trd-ans">{{ choice }}</button>{% endfor %} -->
-      </div>
+    <h2 class="card-text mono">{{ form.choices.label }}</h2>
+    <div class="d-flex ans-box justify-content-around">
+      <!-- {% for choice in form.choices %}<button class="btn btn-ans trd-ans">{{ choice }}</button>{% endfor %} -->
+    </div>
   </div>
 </div>
 {{ question.id|json_script:"question-id" }}

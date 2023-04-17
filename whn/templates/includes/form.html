@@ -2,7 +2,6 @@
 {% load thumbnail %}
 <div class="form-group col-sm-5 mx-auto mb-2">
   {% if messages %}
-    <p></p>
     {% for message in messages %}
       <h4{% if message.tags %}
         class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
@@ -20,7 +19,7 @@
              width="{{ im.width }}"
              height="{{ im.height }}"
              class="rounded float-end"
-             alt="Аватарка">
+             alt="Аватарка"/>
       {% endthumbnail %}
     {% endif %}
     <p>{{ field|addclass:'form-control' }}</p>

@@ -38,3 +38,7 @@ jobs:
         run: |
           cd whn
           python manage.py test
+        env:
+          DJANGO_SUPERUSER_USERNAME: superuser_test_username
+          DJANGO_SUPERUSER_EMAIL: superuser_test_username@email.com
+          DJANGO_SUPERUSER_PASSWORD: Hardpwd1

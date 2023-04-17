@@ -1,4 +1,5 @@
 from uuid import uuid4
+
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models import (
     CASCADE,

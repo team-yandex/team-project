@@ -1,7 +1,21 @@
-import moviepy.editor
+import json
+import re
+
+import django.conf
 
 
-def get_trimmed_video(video_path, to_second):
-    video = moviepy.editor.VideoFileClip(video_path)
-    trimmed_video = video.subclip(0, to_second)
-    return trimmed_video.reader
+def normilize_string(string):
+    ambiguous_path = django.conf.settings.BASE_DIR / 'game' / 'ambiguous.json'
+    with ambiguous_path.open(mode='r') as fp:
+        ambiguous = json.load(fp)
+        ambiguous = dict((int(k), v) for k, v in ambiguous.items())
+    # remove puctuaction
+    normilized = re.sub(r'[^\w\s]', '', string)
+    # remove spacing
+    normilized = ''.join(normilized.split())
+    # replace ambiguous symbols to ascii
+    normilized = normilized.upper()
+    normilized = normilized.translate(ambiguous)
+    normilized = normilized.lower()
+    normilized = normilized.translate(ambiguous)
+    return normilized

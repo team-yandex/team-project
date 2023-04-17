@@ -32,6 +32,7 @@ questionSocket.onmessage = function(e) {
         const block = document.querySelector('#card-body-id').parentNode;
         const video = document.querySelector('#question-video');
         video.src = data.url;
+        // TODO: remove hardcode by json_script
         var left = 5
         // TODO: beautify timer
         const p = document.createElement('p');
@@ -43,7 +44,7 @@ questionSocket.onmessage = function(e) {
                 if (left == 1) {clearInterval(this);}
                 p.innerText = left;
                 left -= 1;
-            }, 1000)
+            }, 800)
         })
     }
 };

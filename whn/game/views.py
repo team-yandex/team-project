@@ -41,15 +41,23 @@ class QuestionView(django.views.generic.UpdateView):
             form.cleaned_data['choices'].is_correct
             and django.utils.timezone.now() < end_datetime
         ):
+            # TODO: Anonymous user should avoid it
+            if self.request.user.is_authenticated is True:
+                self.request.user.score += self.object.score
+                self.request.user.save()
             return django.shortcuts.render(
                 self.request,
                 'game/result.html',
-                context={'result': 'ok', 'video': video},
+                context={
+                    'result': 'ok',
+                    'video': video,
+                    'earned': self.object.score,
+                },
             )
         return django.shortcuts.render(
             self.request,
             'game/result.html',
-            context={'result': 'not ok', 'video': video},
+            context={'result': 'not ok', 'video': video, 'earned': -1},
         )
 
 
@@ -63,14 +71,22 @@ class SingleView(django.views.generic.TemplateView):
     def post(self, request, *args, **kwargs):
         # it gets difference between seen and all and chooses random one
         if self.request.user.is_authenticated is True:
-            question = random.choice(
-                list(
-                    game.models.Question.objects.difference(
-                        self.request.user.seen_questions.all()
-                    )
+            questions = list(
+                game.models.Question.objects.published().values_list(
+                    'id', flat=True
                 )
             )
-        # TODO: avoid situation where questions are ended up
-        return django.shortcuts.redirect(
-            django.urls.reverse('game:question', kwargs=dict(pk=question.id))
-        )
+            if questions != []:
+                # TODO: avoid situation where questions are ended up
+                return django.shortcuts.redirect(
+                    django.urls.reverse(
+                        'game:question',
+                        kwargs=dict(pk=random.choice(questions)),
+                    )
+                )
+            else:
+                return django.shortcuts.render(
+                    self.request, 'game/completed.html'
+                )
+        else:
+            return django.shortcuts.redirect('users:login')

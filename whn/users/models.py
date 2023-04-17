@@ -4,7 +4,7 @@ from django_cleanup.signals import cleanup_pre_delete
 import sorl
 from sorl.thumbnail import delete, get_thumbnail
 
-from game.models import Question
+# from game.models import Question
 from .managers import UserManager
 
 
@@ -26,7 +26,7 @@ class User(AbstractUser):
     )
 
     seen_questions = models.ManyToManyField(
-        Question, verbose_name='пройденные вопросы'
+        'game.Question', verbose_name='пройденные вопросы'
     )
 
     session_points = models.PositiveSmallIntegerField(

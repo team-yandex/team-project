@@ -1,5 +1,7 @@
 import pathlib
 
+import django.conf
+import django.core.exceptions
 import django.core.files
 import django.core.validators
 import django.db.models
@@ -7,6 +9,7 @@ import moviepy.editor
 
 import game.managers
 import game.utils
+import users.models
 
 
 class Question(django.db.models.Model):
@@ -25,9 +28,18 @@ class Question(django.db.models.Model):
     score = django.db.models.PositiveIntegerField(
         'очки',
         help_text='введите очки за данный вопрос',
+        editable=False,
     )
     created_on = django.db.models.DateTimeField(auto_now_add=True)
-    # TODO: author
+    author = django.db.models.ForeignKey(
+        users.models.User,
+        verbose_name='автор',
+        help_text='укажите автора вопроса',
+        related_name='questions',
+        null=True,
+        blank=True,
+        on_delete=django.db.models.CASCADE,
+    )
     climax_second = django.db.models.PositiveSmallIntegerField(
         'секунда кульминации',
         help_text='введите секунду кульминации',
@@ -61,7 +73,6 @@ class Question(django.db.models.Model):
     class Meta:
         verbose_name = 'вопрос'
         verbose_name_plural = 'вопросы'
-        # TODO: unique together question + choice
 
     def save(
         self,
@@ -76,7 +87,25 @@ class Question(django.db.models.Model):
         ):
             super().save(force_insert, force_update, using, update_fields)
             self.save_climax_video()
-        return super().save(force_insert, force_update, using, update_fields)
+        if (
+            update_fields is None
+            or Question.complexity.field.name in update_fields
+        ):
+            complexity = {1: 'easy', 2: 'medium', 3: 'hard'}[self.complexity]
+            self.score = django.conf.settings.SCORES[complexity]
+            if update_fields is not None:
+                update_fields.append(Question.score.field.name)
+        super().save(force_insert, force_update, using, update_fields)
+        if self.is_published:
+            unique_choices_count = (
+                self.choices.values('label_normilized').distinct().count()
+            )
+            if (
+                self.choices.filter(is_correct=True).count() != 1
+                or unique_choices_count != 4
+            ):
+                self.is_published = False
+                super().save()
 
     def save_climax_video(self):
         video_path = pathlib.Path(self.video.path)
@@ -98,13 +127,16 @@ class Choice(django.db.models.Model):
         help_text='введите текст варианта ответа',
         max_length=200,
     )
+    label_normilized = django.db.models.CharField(
+        editable=False,
+        max_length=200,
+    )
     question = django.db.models.ForeignKey(
         Question,
         verbose_name='вопрос',
         related_name='choices',
         on_delete=django.db.models.CASCADE,
     )
-    # TODO: only one correct for question
     is_correct = django.db.models.BooleanField(
         'верный ли',
         help_text='выберете, является ли этот вариант верным',
@@ -114,6 +146,16 @@ class Choice(django.db.models.Model):
     class Meta:
         verbose_name = 'вариант'
         verbose_name_plural = 'варианты'
+
+    def save(
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
+    ):
+        self.label_normilized = game.utils.normilize_string(self.label)
+        return super().save(force_insert, force_update, using, update_fields)
 
     def __str__(self):
         return self.label[:21]

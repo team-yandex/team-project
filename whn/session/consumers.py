@@ -63,7 +63,10 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
                 await self.send(
                     text_data=json.dumps({'truth': 'Вы были неправы!'})
                 )
-            elif await self.is_correct(data['answer']) is None and not self.answered:
+            elif (
+                await self.is_correct(data['answer']) is None
+                and not self.answered
+            ):
                 self.answered = True
                 await self.send(
                     text_data=json.dumps({'truth': 'Вы не успели!'})

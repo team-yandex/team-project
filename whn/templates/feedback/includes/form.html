@@ -1,23 +1,8 @@
 {% load user_filters %}
-
 {% for field in form %}
-  {% for error in field.errors %}
-    <div class="alert alert-danger">
-      {{ error|escape }}
-    </div>
-  {% endfor %}
-
+  {% for error in field.errors %}<div class="alert alert-danger">{{ error|escape }}</div>{% endfor %}
   {{ field.label_tag }}
   <p>{{ field|addclass:'form-control' }}</p>
-  {% if field.help_text %}
-    <p class="form-text text-muted">{{ field.help_text }}</p>
-  {% endif %}
+  {% if field.help_text %}<p class="form-text text-muted">{{ field.help_text }}</p>{% endif %}
 {% endfor %}
-
-{% for error in form.non_field_errors %}
-  <div class="alert alert-danger">
-    {{ error|escape }}
-  </div>
-{% endfor %}
-
-
+{% for error in form.non_field_errors %}<div class="alert alert-danger">{{ error|escape }}</div>{% endfor %}

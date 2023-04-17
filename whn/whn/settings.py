@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     'feedback.apps.FeedbackConfig',
     'game.apps.GameConfig',
     'info.apps.InfoConfig',
-    'users.apps.UsersConfig',
     'session.apps.SessionConfig',
+    'users.apps.UsersConfig',
 ]
 if DEBUG:
     INSTALLED_APPS.append('debug_toolbar')
@@ -158,4 +158,10 @@ CHANNEL_LAYERS = {
             'hosts': [('127.0.0.1', 6379)],
         },
     },
+}
+
+SCORES = {
+    'hard': 15,
+    'medium': 10,
+    'easy': 5,
 }
