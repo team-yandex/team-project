@@ -137,7 +137,11 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def choose_questions(self, amount):
-        queryset = Question.objects.published().order_by('?')
+        queryset = (
+            Question.objects.published()
+            .filter(complexity=self.session.complexity)
+            .order_by('?')
+        )
         self.questions = tuple(queryset.values_list('id', flat=True)[:amount])
 
     @database_sync_to_async

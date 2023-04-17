@@ -27,10 +27,13 @@
         <li>
           <a class="dropdown-item" href="{% url 'feedback:feedback' %}">Обратная связь</a>
         </li>
-        <li>
-          <a class="dropdown-item" href="{% url 'info:about_page' %}">О проекте</a>
-        </li>
         {% if request.user.is_authenticated %}
+          <li>
+            <a class="dropdown-item" href="{% url 'session:create' %}">Создать сессию</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="{% url 'sessoin:connect' %}">Подключиться к сессии</a>
+          </li>
           <li>
             <a class="dropdown-item" href="{% url 'users:profile' %}">Профиль</a>
           </li>
