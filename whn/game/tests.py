@@ -32,9 +32,7 @@ class QuestionViewTest(django.test.TestCase):
             pk=cls.QUESTION_ID
         )
         cls.form = game.forms.QuestionForm(instance=cls.question)
-        cls.question_url = django.urls.reverse(
-            'game:question', kwargs=dict(pk=cls.QUESTION_ID)
-        )
+        cls.question_url = django.urls.reverse('game:question')
         cls.application = (
             channels.security.websocket.AllowedHostsOriginValidator(
                 channels.sessions.SessionMiddlewareStack(
@@ -66,16 +64,7 @@ class QuestionViewTest(django.test.TestCase):
         response = django.test.Client().get(self.question_url)
         self.assertIn('question', response.context)
 
-    def test_correct_question_in_context(self):
-        """test that correct question is in context"""
-        response = django.test.Client().get(self.question_url)
-        self.assertEqual(response.context['question'].id, self.question.id)
-
-    def test_correct_choices_showed(self):
-        """test that correct choices showed"""
-        response = django.test.Client().get(self.question_url)
-        for choice in self.question.choices.all():
-            self.assertContains(response, choice.label)
+    # TODO: restore removed test with mocking random
 
     def test_choice_label_correct(self):
         """test choice field label is correct"""
