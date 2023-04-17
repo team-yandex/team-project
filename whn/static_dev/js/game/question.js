@@ -3,14 +3,10 @@ const questionId = JSON.parse(document.getElementById('question-id').textContent
 const questionSocket = new WebSocket(
     'ws://'
     + window.location.host
-    + '/ws/session/'
-    + questionId // TODO: session id
+    + '/ws/question/'
+    + questionId
     + '/'
 );
-
-questionSocket.onopen = function(e) {
-    questionSocket.send(JSON.stringify({'questionId': questionId}))   
-}
 
 questionSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
@@ -28,5 +24,5 @@ questionSocket.onmessage = function(e) {
 };
 
 questionSocket.onclose = function(e) {
-    console.error('Chat socket closed unexpectedly');
+    console.error('Question socket closed unexpectedly');
 };

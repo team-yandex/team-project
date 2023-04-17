@@ -10,11 +10,11 @@
           <h1 class="modal-title fs-5">Вы ответили на вопрос</h1>
         </div>
         <div class="modal-body py-0">
-          Результат: {{ result }}
+          Результат: {% if success %}Верно{% else %}Неверно{%endif%}
         </div>
         <div class="modal-footer flex-column border-top-0">
-          <a href="{% url 'game:single' %}"
-             class="btn btn-lg pink-bg w-100 mx-0">Заново</a>
+          <a href="{% url 'game:question' %}"
+             class="btn btn-lg pink-bg w-100 mx-0">Еще раз</a>
         </div>
       </div>
     </div>

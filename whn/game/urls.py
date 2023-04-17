@@ -7,7 +7,7 @@ app_name = 'game'
 
 urlpatterns = [
     django.urls.path(
-        'question/<int:pk>',  # TODO: random question
+        'question/',
         game.views.QuestionView.as_view(),
         name='question',
     ),
