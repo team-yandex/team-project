@@ -1,23 +1,23 @@
-from cryptography.fernet import Fernet
+from uuid import uuid4
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models import (
+    CASCADE,
     CharField,
+    ForeignKey,
     IntegerChoices,
     ManyToManyField,
     Model,
     PositiveSmallIntegerField,
     TextChoices,
+    UUIDField,
 )
-from whn.settings import SESSION_CRYPTO
 
 from users.models import User
 
 
 class Session(Model):
-    code = CharField(
-        'код',
-        help_text='код сессии',
-        max_length=200,
+    code = UUIDField(
+        'код', help_text='код сессии', max_length=200, default=uuid4
     )
 
     max_users = PositiveSmallIntegerField(
@@ -59,15 +59,9 @@ class Session(Model):
         validators=[MaxValueValidator(25)],
     )
 
-    users = ManyToManyField(User, 'пользователи')
+    owner = ForeignKey(User, on_delete=CASCADE, null=True)
 
-    def save(self, *args, **kwargs):
-        if self._state.adding is True:
-            # abscence of SESSION_CRYPTO will cause an exception
-            self.code = Fernet(SESSION_CRYPTO.encode()).encrypt(
-                str(self.id).encode()
-            )
-        return super().save(*args, **kwargs)
+    users = ManyToManyField(User, 'пользователи')
 
     def __str__(self):
         return str(self.id)

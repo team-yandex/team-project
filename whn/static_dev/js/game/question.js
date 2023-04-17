@@ -22,9 +22,7 @@ questionSocket.onmessage = function(e) {
         const button = document.createElement('a');
         button.className += 'btn btn-trd';
         button.innerText = 'Заново';
-        // TODO: remove hardcode
-        // possible solution: move js to template and use url templatetag 
-        button.href = 'http://127.0.0.1:8000/game/single/';
+        button.href = location.protocol + '//' + location.host + '/game/single/';
         form.parentNode.appendChild(button);
         form.parentNode.removeChild(form);
         const video = document.querySelector('#question-video');

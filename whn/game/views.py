@@ -21,7 +21,7 @@ class QuestionView(django.views.generic.UpdateView):
     def get(self, request, pk, *args, **kwargs):
         if self.request.user.is_authenticated is True:
             question = self.request.user.seen_questions.filter(pk=pk).first()
-            if question is None:
+            if question is None or self.request.session['owner']:
                 selected = game.models.Question.objects.get(pk=pk)
                 self.request.user.seen_questions.add(selected)
                 return super().get(request, *args, **kwargs)

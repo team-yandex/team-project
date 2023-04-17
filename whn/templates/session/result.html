@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load static %}
 {% block content %}
   <div class="modal modal-sheet position-static d-block py-5"
        tabindex="-1"
@@ -15,11 +14,12 @@
         <div class="modal-body py-0">Результат: {{ result }}</div>
         <div class="modal-footer flex-column border-top-0">
           <a href="{% url 'game:single' %}" class="btn btn-lg pink-bg w-100 mx-0">Заново</a>
+          {{ request.session.owner }}
         </div>
       </div>
     </div>
   </div>
 {% endblock content %}
 {% block scripts %}
-  <script src="{% static 'js/session/lobby.js' %}"></script>
+  <script src="{% url 'js/session.lobby.js' %}"></script>
 {% endblock %}

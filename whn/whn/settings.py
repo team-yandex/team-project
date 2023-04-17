@@ -41,9 +41,9 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'core.apps.CoreConfig',
     'feedback.apps.FeedbackConfig',
-    'users.apps.UsersConfig',
     'game.apps.GameConfig',
     'info.apps.InfoConfig',
+    'users.apps.UsersConfig',
     'session.apps.SessionConfig',
 ]
 if DEBUG:
@@ -151,3 +151,11 @@ LOGIN_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'users.User'
 
 PAGINATE_BY = 3
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
+    },
+}

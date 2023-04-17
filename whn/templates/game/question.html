@@ -18,5 +18,7 @@
     </div>
   </div>
   {{ question.id|json_script:"question-id" }}
-  <script src="{% static 'js/game/question.js' %}"></script>
 {% endblock content %}
+{% block scripts %}
+  <script src="{% static 'js/game/question.js' %}"></script>
+{% endblock %}

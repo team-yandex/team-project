@@ -1,6 +1,19 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
-  <div class="content col-6">
-    <p>{{ request.session.session_token }}</p>
+  <div id="container" class="container col-6">
+    <p id="owner">Владелец: {{ request.session.owner }}</p>
+    <p id="session_id" >{{ request.session.session_token }}</p>
+    <ul id="user-list" class="list-group"></ul>
+    <br>
+    {% if request.session.owner == request.user.username %} 
+      <button id="start" class="btn btn-trd">Начать игру</button>
+    {% endif %}
   </div>
+{% endblock %}
+{% block scripts %}
+  {% if request.session.owner == request.user.username %} 
+    {{ request.user.id|json_script:"user_id" }}
+  {% endif %}
+  <script src="{% static 'js/session/lobby.js' %}"></script>
 {% endblock %}

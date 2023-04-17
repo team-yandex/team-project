@@ -29,6 +29,10 @@ class User(AbstractUser):
         Question, verbose_name='пройденные вопросы'
     )
 
+    session_points = models.PositiveSmallIntegerField(
+        'баллы в сессии', default=0
+    )
+
     class Meta:
         verbose_name = 'пользователь'
         verbose_name_plural = 'пользователи'
