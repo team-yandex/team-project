@@ -71,13 +71,14 @@ class Activate(TemplateView):
             username=self.kwargs['username'],
             is_active=False,
         )
-
-        is_link_expired = timezone.now() - user.date_joined > timedelta(
-            hours=12
+        timedelta_ago_joined = user.date_joined - timezone.localtime()
+        timedelta_ago_joined -= timedelta(
+            microseconds=timedelta_ago_joined.microseconds
         )
+        is_link_expired = timedelta_ago_joined > timedelta(hours=12)
 
         if is_link_expired:
-            HttpResponseGone('Link expired')
+            return HttpResponseGone('Link expired')
 
         user.is_active = 1
         user.save()

@@ -16,6 +16,7 @@ import moviepy.editor
 import game.consumers
 import game.forms
 import game.models
+import users.models
 
 
 class QuestionViewTest(django.test.TestCase):
@@ -141,6 +142,13 @@ class QuestionViewTest(django.test.TestCase):
 
 
 class QuestionModelTest(django.test.TestCase):
+    fixtures = ['questions.json']
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        cls.question = game.models.Question.objects.first()
+
     @django.test.override_settings(MEDIA_ROOT=tempfile.gettempdir())
     def test_climax_video_created(self):
         video_path = pathlib.Path('game') / 'fixtures' / 'Да_ты_че.mp4'
@@ -151,7 +159,43 @@ class QuestionModelTest(django.test.TestCase):
                 score=5,
                 climax_second=climax_second,
                 complexity=game.models.Question.Complexity.easy,
+                author=users.models.User.objects.get(pk=1),
             )
             question.save()
         climax_video = moviepy.editor.VideoFileClip(question.climax_video.path)
         self.assertEqual(climax_video.duration, climax_second)
+
+    def test_question_published_with_only_one_correct_answer(self):
+        """test question published with only one correct answer"""
+        self.assertTrue(self.question.is_published)
+        choice = self.question.choices.filter(is_correct=False).first()
+        choice.is_correct = True
+        choice.save()
+        self.question.save(update_fields=[])
+        self.assertFalse(self.question.is_published)
+
+    def test_question_published_with_4_choices(self):
+        """test question published with 4 choices"""
+        self.assertTrue(self.question.is_published)
+        choice = game.models.Choice(label='test', question=self.question)
+        choice.save()
+        self.question.save(update_fields=[])
+        self.assertFalse(self.question.is_published)
+
+    def test_question_published_with_4_normilized_choices(self):
+        """test question published with 4 normilized choices"""
+        self.assertTrue(self.question.is_published)
+        older_choice = self.question.choices.order_by('id').first()
+        self.assertEqual(older_choice.label, 'Ничего не случиться')
+        choice = self.question.choices.exclude(id=older_choice.id).first()
+        for label in (
+            'Ничего   не\tслучиться\n',
+            'Ничего, не, случиться?',
+            'НичегО Не СЛУЧИТЬСЯ',
+            'Ни чего не слу читься',
+        ):
+            with self.subTest(label=label):
+                choice.label = label
+                choice.save()
+                self.question.save(update_fields=[])
+                self.assertFalse(self.question.is_published)
