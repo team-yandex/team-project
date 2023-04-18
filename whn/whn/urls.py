@@ -7,10 +7,11 @@ from django.urls import include, path
 urlpatterns = [
     path('feedback/', include('feedback.urls', namespace='feedback')),
     path('', include('info.urls')),
-    path('game/', include('game.urls')),
     path('auth/', include('users.urls', namespace='users')),
     path('auth/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
+    path('game/', include('game.urls')),
+    path('session/', include('session.urls')),
 ]
 
 if settings.DEBUG:

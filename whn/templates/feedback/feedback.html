@@ -5,7 +5,6 @@
     <h1 class="text-center">Форма обратной связи</h1>
     <div class="form-group col-sm-5 mx-auto mb-2">
       {% if messages %}
-        <p></p>
         {% for message in messages %}
           <h4{% if message.tags %}
             class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
