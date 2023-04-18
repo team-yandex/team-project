@@ -1,4 +1,4 @@
-const session_id = $('#session_id').text()
+const session_id = $('#session_id span').text()
 
 const socket = new WebSocket(
   'ws://'
@@ -90,10 +90,8 @@ socket.onmessage = (message) => {
       $('#leaderbord').append(li)
     }
   } else if (data.hasOwnProperty('truth')) {
-    let ans = $('<h3>')
-    ans.attr('class', 'modal-title')
+    let ans = $('#main-label')
     ans.text(data.truth)
-    $('#card-body-id').append(ans)
   }
 }
 
@@ -102,4 +100,5 @@ $('#start').on('click', () => {
 })
 
 socket.onclose = () => {
+  console.log('Socket was closed')
 }

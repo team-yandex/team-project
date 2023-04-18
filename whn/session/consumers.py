@@ -13,9 +13,6 @@ from users.models import User
 
 
 class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
     async def connect(self):
         self.session_id = self.scope['url_route']['kwargs']['session_id']
 
@@ -53,7 +50,7 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
                 and not self.answered
             ):
                 self.answered = True
-                await self.send(json.dumps({'truth': 'Вы были правы'}))
+                await self.send(json.dumps({'truth': 'Вы были правы!'}))
                 await self.update_score(self.scope['user'].pk)
             elif (
                 await self.is_correct(data['answer']) is False
@@ -176,7 +173,10 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
     @database_sync_to_async
     def final_leaderbord(self):
         self.session.status = Session.Status.ENDED
-        return [
-            [user.username, user.session_points]
-            for user in self.session.users.all()
-        ]
+        return sorted(
+            [
+                [user.username, user.session_points]
+                for user in self.session.users.all()
+            ],
+            key=lambda user: -user[1],
+        )
