@@ -24,13 +24,14 @@ class QuestionConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
         self.question = await channels.db.database_sync_to_async(
             self.get_question
         )(question_id)
+
+        await self.accept()
+        message = json.dumps({'url': self.question.climax_video.url})
+        await self.send(message)
         await asgiref.sync.sync_to_async(self.scope['session'].__setitem__)(
             'start_datetime', str(django.utils.timezone.now())
         )
         await asgiref.sync.sync_to_async(self.scope['session'].save)()
-        await self.accept()
-        message = json.dumps({'url': self.question.climax_video.url})
-        await self.send(message)
         await asyncio.sleep(
             self.question.climax_second
             + django.conf.settings.ANSWER_BUFFER_SECONDS

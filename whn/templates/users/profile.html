@@ -2,7 +2,7 @@
 {% block title %}Личный кабинет{% endblock %}
 {% block content %}
   <div class="container">
-    <h1 class="text-center">Мой профиль</h1>
+    <h1 class="text-center">Профиль {{ user.username }}:</h1>
     {% with "Сохранить" as button_text %}
       {% include 'includes/form.html' %}
     {% endwith %}
