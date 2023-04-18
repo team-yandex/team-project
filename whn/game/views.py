@@ -86,6 +86,11 @@ class QuestionView(django.views.generic.UpdateView):
             context={'success': False, 'video': video, 'earned': -1},
         )
 
+    def form_invalid(self, form):
+        return django.shortcuts.render(
+            self.request, 'game/result.html', context={'success': False}
+        )
+
 
 class ResultView(django.views.generic.TemplateView):
     template_name = 'game/result.html'

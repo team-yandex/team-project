@@ -113,6 +113,7 @@ class QuestionViewTest(django.test.TestCase):
 
     def test_moves_to_results(self):
         """test after choosing choice moves to results"""
+        # FIXME: question is random so form is invalid
         correct_choice = self.question.choices.filter(is_correct=True).first()
         answer_data = {'choices': correct_choice.id}
         client = django.test.Client()

@@ -7,8 +7,10 @@
        id="modalSheet">
     <div class="modal-dialog" role="document">
       <div class="modal-content rounded-4 shadow lgrey-bg">
-        <video autoplay src="{{ video.url }}">
-        </video>
+        {% if video %}
+          <video autoplay src="{{ video.url }}">
+          </video>
+        {% endif %}
         <div class="modal-header border-bottom-0">
           <h1 class="modal-title fs-5">Вы ответили на вопрос</h1>
         </div>
