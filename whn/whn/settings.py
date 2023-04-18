@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'sorl.thumbnail',
     'core.apps.CoreConfig',
+    'feedback.apps.FeedbackConfig',
     'users.apps.UsersConfig',
     'game.apps.GameConfig',
     'info.apps.InfoConfig',
@@ -148,3 +149,9 @@ LOGIN_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'users.User'
 
 PAGINATE_BY = 3
+
+SCORES = {
+    'hard': 15,
+    'medium': 10,
+    'easy': 5,
+}
