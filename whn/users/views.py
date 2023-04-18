@@ -158,5 +158,9 @@ class CustomLoginView(LoginView):
         response = super().form_valid(form)
         if 'score' in self.request.session:
             self.request.user.score = self.request.session['score']
-            self.request.user.save()
+        if 'seen_questions' in self.request.session:
+            for pk in self.request.session['seen_questions']:
+                if not self.request.user.seen_questions.filter(pk=pk).exists():
+                    self.request.user.seen_questions.add(pk)
+        self.request.user.save()
         return response
