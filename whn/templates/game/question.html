@@ -11,7 +11,9 @@
           {% csrf_token %}
           <h2 class="card-text mono">{{ form.choices.label }}</h2>
           <div class="d-flex ans-box justify-content-around">
-            {% for choice in form.choices %}<button class="btn btn-ans trd-ans">{{ choice }}</button>{% endfor %}
+            {% for choice in form.choices %}
+              <button class="btn btn-ans trd-ans">{{ choice }}</button>
+            {% endfor %}
           </div>
         </form>
       </div>
