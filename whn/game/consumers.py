@@ -16,33 +16,27 @@ class QuestionConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
         self.question = None
 
     async def connect(self):
-        self.session_id = self.scope['url_route']['kwargs']['session_id']
+        question_id = await channels.db.database_sync_to_async(
+            self.scope['session'].get
+        )('question_id')
+        if question_id is None:
+            await self.close()
+        self.question = await channels.db.database_sync_to_async(
+            self.get_question
+        )(question_id)
         await asgiref.sync.sync_to_async(self.scope['session'].__setitem__)(
             'start_datetime', str(django.utils.timezone.now())
         )
         await asgiref.sync.sync_to_async(self.scope['session'].save)()
         await self.accept()
-
-    async def receive(self, text_data):
-        data = json.loads(text_data)
-        if self.question is None:
-            # first message is question id
-            # TODO: handle if there is no questionId
-            question_id = data['questionId']
-            self.question = await channels.db.database_sync_to_async(
-                self.get_question
-            )(question_id)
-            message = json.dumps({'url': self.question.climax_video.url})
-            await self.send(message)
-            await asyncio.sleep(
-                self.question.climax_second
-                + django.conf.settings.ANSWER_BUFFER_SECONDS
-            )
-            end_message = json.dumps(
-                {'end': True, 'url': self.question.video.url}
-            )
-            await self.send(end_message)
-            return
+        message = json.dumps({'url': self.question.climax_video.url})
+        await self.send(message)
+        await asyncio.sleep(
+            self.question.climax_second
+            + django.conf.settings.ANSWER_BUFFER_SECONDS
+        )
+        end_message = json.dumps({'end': True, 'url': self.question.video.url})
+        await self.send(end_message)
 
     def get_question(self, question_id):
         return (
@@ -50,3 +44,10 @@ class QuestionConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
             .filter(pk=question_id)
             .first()
         )
+
+    async def disconnect(self, code):
+        await asgiref.sync.sync_to_async(self.scope['session'].pop)(
+            'question_id'
+        )
+        await asgiref.sync.sync_to_async(self.scope['session'].save)()
+        return await super().disconnect(code)
