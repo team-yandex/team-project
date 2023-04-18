@@ -19,7 +19,7 @@ class QuestionView(django.views.generic.UpdateView):
     success_url = django.urls.reverse_lazy('game:result')
 
     def get(self, request, pk, *args, **kwargs):
-        if self.request.user.is_authenticated is True:
+        if self.request.user.is_authenticated:
             question = self.request.user.seen_questions.filter(pk=pk).first()
             if question is None:
                 selected = game.models.Question.objects.get(pk=pk)
@@ -45,8 +45,7 @@ class QuestionView(django.views.generic.UpdateView):
             form.cleaned_data['choices'].is_correct
             and django.utils.timezone.now() < end_datetime
         ):
-            # TODO: Anonymous user should avoid it
-            if self.request.user.is_authenticated is True:
+            if self.request.user.is_authenticated:
                 self.request.user.score += self.object.score
                 self.request.user.save()
             return django.shortcuts.render(
@@ -74,7 +73,7 @@ class SingleView(django.views.generic.TemplateView):
 
     def post(self, request, *args, **kwargs):
         # it gets difference between seen and all and chooses random one
-        if self.request.user.is_authenticated is True:
+        if self.request.user.is_authenticated:
             questions = list(
                 set(
                     game.models.Question.objects.published().values_list(

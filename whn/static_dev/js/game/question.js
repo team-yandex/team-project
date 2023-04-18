@@ -45,7 +45,7 @@ questionSocket.onmessage = function(e) {
                 if (left == 1) {clearInterval(this);}
                 p.innerText = left;
                 left -= 1;
-            }, 800)
+            }, 1000)
         }
         video.addEventListener('ended', stopped)
     }

@@ -1,5 +1,6 @@
 from asyncio import sleep
 import json
+import random
 
 from asgiref.sync import sync_to_async
 from channels.consumer import database_sync_to_async
@@ -9,10 +10,15 @@ from session.models import Session
 from whn.settings import ANSWER_BUFFER_SECONDS
 
 from game.models import Choice, Question
-from users.models import User
 
 
 class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.counter = 0
+        self.questions = []
+        self.answered = False
+
     async def connect(self):
         self.session_id = self.scope['url_route']['kwargs']['session_id']
 
@@ -34,8 +40,10 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
 
     async def receive(self, text_data=None, bytes_data=None):
         # ээх, щас бы python 3.10 и pattern matching...
-        data = json.loads(str(text_data))
-        if data.get('event') == 'start':
+
+        data = json.loads(text_data or '{event: "None"}')
+        event = data.get('event')
+        if event == 'start':
             self.counter = 0
             await self.activate()
             await self.choose_questions(self.session.max_questions)
@@ -44,32 +52,23 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
                 'number': self.questions[self.counter],
             }
             await self.channel_layer.group_send(self.session_id, message)
-        elif data.get('event') == 'answer':
-            if (
-                await self.is_correct(data['answer']) is True
-                and not self.answered
-            ):
+        elif event == 'answer' and not self.answered:
+            if await self.is_correct(data['answer']) is True:
                 self.answered = True
-                await self.send(json.dumps({'truth': 'Вы были правы!'}))
-                await self.update_score(self.scope['user'].pk)
-            elif (
-                await self.is_correct(data['answer']) is False
-                and not self.answered
-            ):
+                await self.send(json.dumps({'success': 'Вы были правы!'}))
+                await self.update_score()
+            elif await self.is_correct(data['answer']) is False:
                 self.answered = True
                 await self.send(
-                    text_data=json.dumps({'truth': 'Вы были неправы!'})
+                    text_data=json.dumps({'success': 'Вы были неправы!'})
                 )
-            elif (
-                await self.is_correct(data['answer']) is None
-                and not self.answered
-            ):
+            elif await self.is_correct(data['answer']) is None:
                 self.answered = True
                 await self.send(
-                    text_data=json.dumps({'truth': 'Вы не успели!'})
+                    text_data=json.dumps({'success': 'Вы не успели!'})
                 )
 
-        elif data.get('event') == 'next':
+        elif event == 'next':
             self.counter += 1
             if self.counter == len(self.questions):
                 message = {'type': 'finish'}
@@ -81,14 +80,8 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
                 }
                 await self.channel_layer.group_send(self.session_id, message)
 
-        return await super().receive(text_data, bytes_data)
-
     async def get_question(self, event):
         self.answered = False
-        await sync_to_async(self.scope['session'].__setitem__)(
-            'start_datetime', str(timezone.now())
-        )
-        await sync_to_async(self.scope['session'].save)()
         instance = await self.question_by_id(event['number'])
         await self.send(
             text_data=json.dumps(
@@ -99,6 +92,10 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
                 }
             )
         )
+        await sync_to_async(self.scope['session'].__setitem__)(
+            'start_datetime', str(timezone.now())
+        )
+        await sync_to_async(self.scope['session'].save)()
         await sleep(instance.climax_second + ANSWER_BUFFER_SECONDS)
         await self.send(text_data=json.dumps({'end': instance.video.url}))
 
@@ -126,20 +123,24 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_all_users(self):
-        return tuple([user.username for user in self.session.users.all()])
+        return list(self.session.users.values_list('username', flat=True))
 
     @database_sync_to_async
     def activate(self):
         self.session.status = Session.Status.ACTIVE
+        self.session.save()
 
     @database_sync_to_async
     def choose_questions(self, amount):
-        queryset = (
-            Question.objects.published()
-            .filter(complexity=self.session.complexity)
-            .order_by('?')
+        queryset = random.sample(
+            list(
+                Question.objects.published()
+                .filter(complexity=self.session.complexity)
+                .values_list('id', flat=True)
+            ),
+            k=amount,
         )
-        self.questions = tuple(queryset.values_list('id', flat=True)[:amount])
+        self.questions = queryset
 
     @database_sync_to_async
     def get_video_by_id(self, id):
@@ -157,26 +158,23 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def is_correct(self, id):
-        if type(id) == str:
+        if isinstance(id, str):
             return None
         choice = Choice.objects.get(pk=id)
-        if choice.is_correct is True:
-            return True
-        return False
+        return choice.is_correct
 
     @database_sync_to_async
-    def update_score(self, id):
-        winner = User.objects.get(pk=id)
-        winner.session_points += 1
-        winner.save()
+    def update_score(self):
+        self.scope['user'].session_points += 1
+        self.scope['user'].save()
 
     @database_sync_to_async
     def final_leaderbord(self):
         self.session.status = Session.Status.ENDED
+        self.session.save()
         return sorted(
-            [
-                [user.username, user.session_points]
-                for user in self.session.users.all()
-            ],
-            key=lambda user: -user[1],
+            self.session.users.only('session_points', 'username').values(
+                'session_points', 'username'
+            ),
+            key=lambda user: -user['session_points'],
         )

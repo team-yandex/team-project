@@ -65,6 +65,7 @@ socket.onmessage = (message) => {
     $('#timer').remove()
     $('.ans-box').empty()
     $('#question-video').attr('src', data.end)
+    $('#question-video').attr('crossorigin', 'anonymous')
     $('#question-video')[0].load()
     $('#question-video').off('ended')
     $('#question-video')[0].play()
@@ -86,12 +87,12 @@ socket.onmessage = (message) => {
     for (const user of data.finish) {
       let li = $('<li>')
       li.attr('class', 'list-group-item')
-      li.text(`Пользователь: ${user[0]}, очки: ${user[1]}`)
+      li.text(`Пользователь: ${user.username}, очки: ${user.session_points}`)
       $('#leaderbord').append(li)
     }
-  } else if (data.hasOwnProperty('truth')) {
+  } else if (data.hasOwnProperty('success')) {
     let ans = $('#main-label')
-    ans.text(data.truth)
+    ans.text(data.success)
   }
 }
 
