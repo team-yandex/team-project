@@ -16,12 +16,11 @@ class QuestionManager(django.db.models.Manager):
             )
         )
 
-    def random(self):
-        max_id = self.published().aggregate(max_id=django.db.models.Max('id'))[
-            'max_id'
-        ]
-        while True:
-            pk = random.randint(1, max_id)
-            question = self.get_queryset().filter(pk=pk).first()
-            if question and question.is_published:
-                return question
+    def random(self, exclude=None):
+        pks = self.published().values_list('pk', flat=True)
+        if exclude is not None:
+            pks = list(set(pks) - set(exclude))
+        if pks:
+            random_pk = random.choice(pks)
+            return self.get(pk=random_pk)
+        return None
