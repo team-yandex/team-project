@@ -46,9 +46,7 @@ socket.onmessage = (message) => {
           $('.ans-box').append(btn)
         }
 
-        // TODO: remove hardcode by json_script
         var left = $('#answer-time').text()
-        // TODO: beautify timer
         const p = $('<p>')
         p.text(left)
         p.attr('id', 'timer')
@@ -68,6 +66,7 @@ socket.onmessage = (message) => {
     $('.ans-box').empty()
     $('#question-video').attr('src', data.end)
     $('#question-video')[0].load()
+    $('#question-video').off('ended')
     $('#question-video')[0].play()
 
     if ($('#user_id').length) {
@@ -81,19 +80,18 @@ socket.onmessage = (message) => {
       $('#card-body-id').append(next)
     }
   } else if (data.hasOwnProperty('finish')) {
-    console.log(data.finish)
     $('#container').empty()
     $('#container').append($('<h2>Результаты</h2>'))
     $('#container').append($("<ul id=leaderbord class='list-group'></ul>"))
     for (const user of data.finish) {
-      console.log(user)
       let li = $('<li>')
       li.attr('class', 'list-group-item')
       li.text(`Пользователь: ${user[0]}, очки: ${user[1]}`)
       $('#leaderbord').append(li)
     }
   } else if (data.hasOwnProperty('truth')) {
-    let ans = $('<p>')
+    let ans = $('<h3>')
+    ans.attr('class', 'modal-title')
     ans.text(data.truth)
     $('#card-body-id').append(ans)
   }

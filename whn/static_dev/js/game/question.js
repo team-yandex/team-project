@@ -18,7 +18,6 @@ questionSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
     if (data.hasOwnProperty('end') && data.end) {
         questionSocket.close()
-        console.log(123123131)
         const form = document.querySelector('#card-body-id');
         document.querySelector('#timer').remove()
         const button = document.createElement('a');
@@ -29,6 +28,7 @@ questionSocket.onmessage = function(e) {
         form.parentNode.removeChild(form);
         const video = document.querySelector('#question-video');
         video.src = data.url;
+        video.removeEventListener('ended', stopped);
         video.play();
     } else if (data.hasOwnProperty('url')) {
         const block = document.querySelector('#card-body-id').parentNode;
@@ -39,17 +39,18 @@ questionSocket.onmessage = function(e) {
         const p = document.createElement('p');
         p.setAttribute('id', 'timer');
         video.play();
-        video.addEventListener('ended', function() {
+        function stopped() {
             block.appendChild(p);
             setInterval(function () {
                 if (left == 1) {clearInterval(this);}
                 p.innerText = left;
                 left -= 1;
             }, 800)
-        })
+        }
+        video.addEventListener('ended', stopped)
     }
 };
 
 questionSocket.onclose = function(e) {
-    console.log('Socket closed')
+    console.log('Socket closed');
 };

@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-  <div id="container" class="container col-6">
-    <p id="owner">Владелец: {{ request.session.owner }}</p>
-    <p id="session_id">{{ request.session.session_token }}</p>
+  <div id="container" class="container col-6 mt-3">
+    <h1 id="owner">Владелец: {{ request.session.owner }}</h1>
+    <h2 id="session_id">
+      <span class="badge bg-secondary">{{ request.session.session_token }}</span>
+    </h2>
     <ul id="user-list" class="list-group">
     </ul>
     <br />
     {% if request.session.owner == request.user.username %}
-      <button id="start" class="btn btn-trd">Начать игру</button>
+      <button id="start" class="btn pink-bg">Начать игру</button>
     {% endif %}
   </div>
 {% endblock %}
