@@ -36,6 +36,8 @@ class Question(django.db.models.Model):
         verbose_name='автор',
         help_text='укажите автора вопроса',
         related_name='questions',
+        null=True,
+        blank=True,
         on_delete=django.db.models.CASCADE,
     )
     climax_second = django.db.models.PositiveSmallIntegerField(

@@ -484,5 +484,67 @@
         "question": 9,
         "is_correct": false
     }
+},
+{
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$260000$SODlusM3XVrrg7h9zNDKR6$gcLCe5TrwqHfXA/j7nUf3xn3KLqrVYFyIJOXszbhRC8=",
+        "last_login": "2023-04-18T07:01:39.466Z",
+        "is_superuser": true,
+        "username": "feremin",
+        "first_name": "",
+        "last_name": "",
+        "email": "ereminfedor8652@list.ru",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2023-04-17T18:07:28.745Z",
+        "image": "",
+        "score": 110,
+        "session_points": 0,
+        "groups": [],
+        "user_permissions": [],
+        "seen_questions": [
+            1,
+            2,
+            3,
+            4,
+            6,
+            7,
+            9
+        ]
+    }
+},
+{
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$260000$YDXFVtAJDMt70cH1U7tx7e$A31SvA49j8FPUEwpeYZjlea3E000OkXRnlBkFeOpnxU=",
+        "last_login": "2023-04-18T10:16:15.960Z",
+        "is_superuser": false,
+        "username": "slave",
+        "first_name": "slava",
+        "last_name": "",
+        "email": "slave@ya.ry",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2023-04-18T10:15:32.493Z",
+        "image": "",
+        "score": 15,
+        "session_points": 0,
+        "groups": [],
+        "user_permissions": [],
+        "seen_questions": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+        ]
+    }
 }
 ]

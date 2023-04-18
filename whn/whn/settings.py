@@ -40,9 +40,10 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'core.apps.CoreConfig',
     'feedback.apps.FeedbackConfig',
-    'users.apps.UsersConfig',
     'game.apps.GameConfig',
     'info.apps.InfoConfig',
+    'session.apps.SessionConfig',
+    'users.apps.UsersConfig',
 ]
 if DEBUG:
     INSTALLED_APPS.append('debug_toolbar')
@@ -72,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'session.context_processors.answer_time',
             ],
         },
     },
@@ -149,6 +151,14 @@ LOGIN_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'users.User'
 
 PAGINATE_BY = 3
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 SCORES = {
     'hard': 15,
