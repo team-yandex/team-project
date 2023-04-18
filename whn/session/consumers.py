@@ -110,9 +110,7 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
         await self.channel_layer.group_send(
             self.session_id, {'type': 'connection'}
         )
-        await sync_to_async(self.scope['session'].pop)(
-            'question_id'
-        )
+        await sync_to_async(self.scope['session'].pop)('question_id')
         await sync_to_async(self.scope['session'].save)()
         return await super().disconnect(code)
 

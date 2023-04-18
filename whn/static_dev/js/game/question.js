@@ -31,14 +31,16 @@ questionSocket.onmessage = function(e) {
         var left = document.querySelector('#answer-time').innerText
         console.log(left, typeof left)
         const p = document.createElement('p');
+        p.innerText = left;
         p.setAttribute('id', 'timer');
         video.play();
+        let enable_timer = true
         function stopped() {
-            block.appendChild(p);
+            if (enable_timer) {block.appendChild(p);}
+            enable_timer = false
             setInterval(function () {
-                if (left == 1) {clearInterval(this);}
-                p.innerText = left;
                 left -= 1;
+                p.innerText = left;
             }, 1000)
         }
         video.addEventListener('ended', stopped)
