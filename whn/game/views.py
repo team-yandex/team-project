@@ -32,21 +32,22 @@ class QuestionView(django.views.generic.UpdateView):
         return game.models.Question.objects.get(pk=question_id)
 
     def get(self, request, *args, **kwargs):
-        response = super().get(request, *args, *kwargs)
+        self.object = self.get_object()
         if self.object is None:
             return django.shortcuts.render(self.request, 'game/completed.html')
         self.request.session['question_id'] = self.object.id
         if self.request.user.is_authenticated:
-            question = self.request.user.seen_questions.filter(
+            is_question_seen = self.request.user.seen_questions.filter(
                 pk=self.object.id
-            ).first()
-            self.request.user.seen_questions.add(self.object)
+            ).exists()
+            if not is_question_seen:
+                self.request.user.seen_questions.add(self.object)
         else:
             if 'seen_questions' in self.request.session:
-                self.request.session['seen_questions'].append(question.id)
+                self.request.session['seen_questions'].append(self.object.id)
             else:
-                self.request.session['seen_questions'] = [question.id]
-        return response
+                self.request.session['seen_questions'] = [self.object.id]
+        return self.render_to_response(self.get_context_data())
 
     def form_valid(self, form):
         if 'question_id' in self.request.session:
