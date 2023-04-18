@@ -5,8 +5,8 @@
   <div id="card-body-id" class="card-body lgrey-bg">
     <h2 class="card-text mono">{{ form.choices.label }}</h2>
     <div class="d-flex ans-box justify-content-around">
-      <!-- {% for choice in form.choices %}<button class="btn btn-ans trd-ans">{{ choice }}</button>{% endfor %} -->
     </div>
   </div>
 </div>
 {{ question.id|json_script:"question-id" }}
+{{ ANSWER_BUFFER_SECONDS|json_script:"answer-time" }}

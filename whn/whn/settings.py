@@ -26,7 +26,6 @@ IS_ACTIVE = (
     os.getenv('IS_ACTIVE', 'True' if DEBUG else 'False').capitalize() == 'True'
 )
 INTERNAL_IPS = os.getenv('INTERNAL_IPS', ['127.0.0.1'])
-SESSION_CRYPTO = os.getenv('SESSION_CRYPTO', 'no crypto')
 
 INSTALLED_APPS = [
     'daphne',
@@ -74,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'session.context_processors.answer_time',
             ],
         },
     },

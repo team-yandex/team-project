@@ -21,12 +21,16 @@ class QuestionView(django.views.generic.UpdateView):
     def get(self, request, pk, *args, **kwargs):
         if self.request.user.is_authenticated is True:
             question = self.request.user.seen_questions.filter(pk=pk).first()
-            if question is None or self.request.session['owner']:
+            if question is None:
                 selected = game.models.Question.objects.get(pk=pk)
                 self.request.user.seen_questions.add(selected)
                 return super().get(request, *args, **kwargs)
+            else:
+                return django.shortcuts.render(
+                    request, 'game/do_not_deceive.html'
+                )
         # to avoid tries to re-run question
-        return django.shortcuts.redirect('game:single')
+        return django.shortcuts.redirect('info:index_page')
 
     def form_valid(self, form):
         start_datetime = datetime.datetime.fromisoformat(
@@ -72,12 +76,17 @@ class SingleView(django.views.generic.TemplateView):
         # it gets difference between seen and all and chooses random one
         if self.request.user.is_authenticated is True:
             questions = list(
-                game.models.Question.objects.published().values_list(
-                    'id', flat=True
+                set(
+                    game.models.Question.objects.published().values_list(
+                        'id', flat=True
+                    )
+                ).difference(
+                    self.request.user.seen_questions.values_list(
+                        'id', flat=True
+                    )
                 )
             )
-            if questions != []:
-                # TODO: avoid situation where questions are ended up
+            if questions:
                 return django.shortcuts.redirect(
                     django.urls.reverse(
                         'game:question',

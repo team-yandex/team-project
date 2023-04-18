@@ -100,3 +100,12 @@ button.btn-ans > label {
   width: 100%;
   height: 100%;
 }
+
+#timer {
+  background: white;
+  padding: 7px;
+  margin: auto;
+  border-radius: 10px;
+  max-width: 40px;
+
+}

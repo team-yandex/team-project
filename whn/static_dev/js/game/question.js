@@ -4,7 +4,7 @@ const questionSocket = new WebSocket(
     'ws://'
     + window.location.host
     + '/ws/session/'
-    + questionId // TODO: session id
+    + questionId 
     + '/'
 );
 
@@ -17,6 +17,8 @@ questionSocket.onopen = function(e) {
 questionSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
     if (data.hasOwnProperty('end') && data.end) {
+        questionSocket.close()
+        console.log(123123131)
         const form = document.querySelector('#card-body-id');
         document.querySelector('#timer').remove()
         const button = document.createElement('a');
@@ -32,14 +34,13 @@ questionSocket.onmessage = function(e) {
         const block = document.querySelector('#card-body-id').parentNode;
         const video = document.querySelector('#question-video');
         video.src = data.url;
-        // TODO: remove hardcode by json_script
-        var left = 5
-        // TODO: beautify timer
+        var left = document.querySelector('#answer-time').innerText
+        console.log(left, typeof left)
         const p = document.createElement('p');
         p.setAttribute('id', 'timer');
-        block.appendChild(p);
         video.play();
         video.addEventListener('ended', function() {
+            block.appendChild(p);
             setInterval(function () {
                 if (left == 1) {clearInterval(this);}
                 p.innerText = left;
@@ -50,5 +51,5 @@ questionSocket.onmessage = function(e) {
 };
 
 questionSocket.onclose = function(e) {
-    console.error('Chat socket closed unexpectedly');
+    console.log('Socket closed')
 };

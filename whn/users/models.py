@@ -4,7 +4,6 @@ from django_cleanup.signals import cleanup_pre_delete
 import sorl
 from sorl.thumbnail import delete, get_thumbnail
 
-# from game.models import Question
 from .managers import UserManager
 
 

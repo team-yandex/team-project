@@ -1,8 +1,4 @@
-// import $ from '../jquery-3.6.4'
-
-
 const session_id = $('#session_id').text()
-console.log(session_id)
 
 const socket = new WebSocket(
   'ws://'
@@ -51,13 +47,14 @@ socket.onmessage = (message) => {
         }
 
         // TODO: remove hardcode by json_script
-        var left = 5
+        var left = $('#answer-time').text()
         // TODO: beautify timer
-        const p = $('<p>');
+        const p = $('<p>')
+        p.text(left)
         p.attr('id', 'timer')
-        $('#card-body-id').append(p)
         $('#question-video')[0].play()
         $('#question-video').on('ended', function() {
+          $('#card-body-id').append(p)
           setInterval(function () {
               p.text(left);
               left -= 1;
@@ -92,7 +89,7 @@ socket.onmessage = (message) => {
       console.log(user)
       let li = $('<li>')
       li.attr('class', 'list-group-item')
-      li.text('Пользователь: ' + user[0] + ', очки: ' + user[1])
+      li.text(`Пользователь: ${user[0]}, очки: ${user[1]}`)
       $('#leaderbord').append(li)
     }
   } else if (data.hasOwnProperty('truth')) {
