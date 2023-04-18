@@ -23,15 +23,16 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
         self.session_id = self.scope['url_route']['kwargs']['session_id']
 
         self.session = await self.get_session(self.session_id)
+        await self.accept()
         if await self.is_avalaible():
             await self.channel_layer.group_add(
                 self.session_id, self.channel_name
             )
             await self.add_user(self.scope['user'])
             message = {'type': 'connection'}
-            await self.accept()
             await self.channel_layer.group_send(self.session_id, message)
         else:
+            await self.send(text_data=json.dumps({'overloaded': True}))
             await self.close()
 
     async def connection(self, event):
@@ -103,6 +104,17 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
         await self.send(
             text_data=json.dumps({'finish': await self.final_leaderbord()})
         )
+
+    async def disconnect(self, code):
+        await self.disconnect_user()
+        await self.channel_layer.group_send(
+            self.session_id, {'type': 'connection'}
+        )
+        await sync_to_async(self.scope['session'].pop)(
+            'question_id'
+        )
+        await sync_to_async(self.scope['session'].save)()
+        return await super().disconnect(code)
 
     @database_sync_to_async
     def get_session(self, code):
@@ -178,3 +190,8 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
             ),
             key=lambda user: -user['session_points'],
         )
+
+    @database_sync_to_async
+    def disconnect_user(self):
+        self.session.users.remove(self.scope['user'])
+        self.session.save()

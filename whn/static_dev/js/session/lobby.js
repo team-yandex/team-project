@@ -87,12 +87,15 @@ socket.onmessage = (message) => {
     for (const user of data.finish) {
       let li = $('<li>')
       li.attr('class', 'list-group-item')
-      li.text(`Пользователь: ${user.username}, очки: ${user.session_points}`)
+      li.text(`Пользователь: ${user.username}, правильных: ${user.session_points}`)
       $('#leaderbord').append(li)
     }
   } else if (data.hasOwnProperty('success')) {
     let ans = $('#main-label')
     ans.text(data.success)
+  } else if (data.hasOwnProperty('overloaded')){
+    $('#container').empty()
+    $('#container').append($('<h2>Свободных мест нет :(</h2>'))
   }
 }
 
