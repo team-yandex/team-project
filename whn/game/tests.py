@@ -31,7 +31,9 @@ class QuestionViewTest(django.test.TestCase):
             pk=cls.QUESTION_ID
         )
         cls.form = game.forms.QuestionForm(instance=cls.question)
-        cls.question_url = django.urls.reverse('game:question')
+        cls.question_url = django.urls.reverse(
+            'game:question', kwargs=dict(pk=cls.QUESTION_ID)
+        )
         cls.application = (
             channels.security.websocket.AllowedHostsOriginValidator(
                 channels.sessions.SessionMiddlewareStack(
@@ -66,7 +68,18 @@ class QuestionViewTest(django.test.TestCase):
         response = django.test.Client().get(self.question_url)
         self.assertIn('question', response.context)
 
-    # TODO: restore removed test with mocking random
+    @unittest.skip
+    def test_correct_question_in_context(self):
+        """test that correct question is in context"""
+        response = django.test.Client().get(self.question_url)
+        self.assertEqual(response.context['question'].id, self.question.id)
+
+    @unittest.skip
+    def test_correct_choices_showed(self):
+        """test that correct choices showed"""
+        response = django.test.Client().get(self.question_url)
+        for choice in self.question.choices.all():
+            self.assertContains(response, choice.label)
 
     def test_choice_label_correct(self):
         """test choice field label is correct"""
@@ -113,7 +126,6 @@ class QuestionViewTest(django.test.TestCase):
 
     def test_moves_to_results(self):
         """test after choosing choice moves to results"""
-        # FIXME: question is random so form is invalid
         correct_choice = self.question.choices.filter(is_correct=True).first()
         answer_data = {'choices': correct_choice.id}
         client = django.test.Client()
