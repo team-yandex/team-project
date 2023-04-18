@@ -6,7 +6,9 @@
     <meta name="keywords" content="game,whn,minecraft,cats"/>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Главная страница</title>
+    <title>
+      {% block title %}Тайтл не подвезли :({% endblock %}
+    </title>
     {% include 'includes/head.html' %}
   </head>
   <body class="sea-bg">
