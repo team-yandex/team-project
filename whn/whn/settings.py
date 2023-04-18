@@ -27,6 +27,9 @@ IS_ACTIVE = (
 )
 INTERNAL_IPS = os.getenv('INTERNAL_IPS', ['127.0.0.1'])
 
+GRAPH_APPS = os.getenv('GRAPH_APPS', '')
+GRAPH_APPS = GRAPH_APPS.split(',') if GRAPH_APPS else ''
+
 INSTALLED_APPS = [
     'daphne',
     'django.contrib.admin',
@@ -45,6 +48,7 @@ INSTALLED_APPS = [
     'session.apps.SessionConfig',
     'users.apps.UsersConfig',
 ]
+
 if DEBUG:
     INSTALLED_APPS.append('debug_toolbar')
 
@@ -57,8 +61,16 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 if DEBUG:
     MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+
+if GRAPH_APPS:
+    INSTALLED_APPS.append('django_extensions')
+    GRAPH_MODELS = {
+        'group_models': True,
+        'app_labels': GRAPH_APPS,
+    }
 
 ROOT_URLCONF = 'whn.urls'
 

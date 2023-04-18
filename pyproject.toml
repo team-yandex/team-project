@@ -17,4 +17,5 @@ profile = 'django'
 max_line_length = 79
 indent = 2
 use_gitignore = true
-extend_exclude='email_texts'
+extend_exclude = 'email_texts'
+format_attribute_template_tags = true
