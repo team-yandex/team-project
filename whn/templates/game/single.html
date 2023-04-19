@@ -9,9 +9,7 @@
           В течение отведённого времени выбери правильный ответ и угадай, что будет дальше.
         </p>
         {% if request.user.is_authenticated %}
-        <p class="card-text">
-          Ваш текущий счет: {{ request.user.score }}
-        </p>
+          <p class="card-text">Ваш текущий счет: {{ request.user.score }}</p>
         {% endif %}
         <a href="{% url 'game:question' %}" class="btn fst-ans">Поиск вопроса</a>
       </div>
