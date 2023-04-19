@@ -35,13 +35,22 @@ source venv/bin/activate
 ```
 
 ### Install dependencies:
-Перейти в папку requirements: 
+Go to requirements: 
 ```bash
 cd requirements
 ```
-- Основной - для запуска сервера: ```pip install -r requirements-prod.txt```
-- Дополнительный - для тестов: ```pip install -r requirements-test.txt```
-- Дополнительный - для разработки: ```pip install -r requirements-dev.txt``` 
+- master - to run server: ```pip install -r requirements-prod.txt```
+- additional - for test: ```pip install -r requirements-test.txt```
+- additional - for development: ```pip install -r requirements-dev.txt``` 
+
+Also you need Redis on your machine to run project:
+[Install Redis](https://redis.io/docs/getting-started/installation/)
+
+For example, in Arch Linux:
+```bash
+sudo pacman -S redis
+sudo systemctl enable --now redis.service
+```
 
 ### Configure
 
@@ -72,9 +81,9 @@ Mac, Linux:
 python3 manage.py runserver
 ```
 
-## ER диаграмма моделей
+## ER diagram
 
-![erd](https://user-images.githubusercontent.com/88326901/233119504-d27abdde-dbeb-4ad8-a94d-32a1231b69ae.svg
+![erd](https://user-images.githubusercontent.com/88326901/233119504-d27abdde-dbeb-4ad8-a94d-32a1231b69ae.svg)
 
 ## For developers
 
