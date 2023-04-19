@@ -1,15 +1,16 @@
-from django.contrib.auth.views import (
-    LogoutView,
-    PasswordChangeDoneView,
-    PasswordChangeView,
-    PasswordResetCompleteView,
-    PasswordResetConfirmView,
-    PasswordResetDoneView,
-    PasswordResetView,
-)
-from django.urls import path, register_converter
+from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import PasswordChangeDoneView
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.views import PasswordResetCompleteView
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.contrib.auth.views import PasswordResetDoneView
+from django.contrib.auth.views import PasswordResetView
+from django.urls import path
+from django.urls import register_converter
 
-from . import converter, views
+from users import converter
+from users import views
+
 
 register_converter(converter.PositiveIntegerConverter, 'PosIntConv')
 

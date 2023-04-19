@@ -33,7 +33,7 @@ jobs:
       - name: flake8 Lint
         uses: py-actions/flake8@v2
         with:
-          plugins: "pep8-naming flake8-import-order flake8-quotes flake8-broken-line flake8-print"
+          plugins: "pep8-naming flake8-quotes flake8-broken-line flake8-print flake8-isort flake8-absolute-import"
       - name: Django Templates Lint
         run: |
           djlint . --check

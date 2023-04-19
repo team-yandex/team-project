@@ -1,4 +1,5 @@
-from django.forms import CharField, Form
+from django.forms import CharField
+from django.forms import Form
 
 
 class ConnectSessionForm(Form):

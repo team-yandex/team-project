@@ -1,13 +1,19 @@
+from uuid import UUID
+
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
-from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, FormView, TemplateView, UpdateView
+from django.shortcuts import redirect
+from django.urls import reverse
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+from django.views.generic import FormView
+from django.views.generic import TemplateView
+from django.views.generic import UpdateView
 from django.views.generic.base import ContextMixin
-from session.forms import ConnectSessionForm
-from session.models import Session
 
 from game.forms import QuestionForm
 from game.models import Question
+from session.forms import ConnectSessionForm
+from session.models import Session
 
 
 class CreateSessionView(LoginRequiredMixin, CreateView):
@@ -30,10 +36,19 @@ class ConnectSessionView(LoginRequiredMixin, FormView):
     success_url = reverse_lazy('session:lobby')
 
     def form_valid(self, form):
-        session = get_object_or_404(Session, code=form.cleaned_data['code'])
-        self.request.session['session_token'] = str(form.cleaned_data['code'])
-        self.request.session['owner'] = session.owner.username
-        return super().form_valid(form)
+        # testing validity of uuid
+        try:
+            code = UUID(form.cleaned_data['code'], version=4)
+        except ValueError:
+            return redirect('session:connect')
+        session = Session.objects.filter(code=code).first()
+        if session:
+            self.request.session['session_token'] = str(
+                form.cleaned_data['code']
+            )
+            self.request.session['owner'] = session.owner.username
+            return super().form_valid(form)
+        return redirect('session:connect')
 
 
 class LobbyView(LoginRequiredMixin, TemplateView, ContextMixin):
