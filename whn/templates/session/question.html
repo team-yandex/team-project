@@ -1,0 +1,11 @@
+<div class="card p-3 lgrey-bg">
+  <video id="question-video" width="" height="500px" src="" muted>
+    Your browser does not support the video tag.
+  </video>
+  <div id="card-body-id" class="card-body lgrey-bg">
+    <h2 id="main-label" class="card-text mono">{{ form.choices.label }}</h2>
+    <div class="d-flex ans-box justify-content-around"></div>
+  </div>
+</div>
+{{ question.id|json_script:"question-id" }}
+{{ ANSWER_BUFFER_SECONDS|json_script:"answer-time" }}

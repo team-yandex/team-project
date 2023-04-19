@@ -73,8 +73,8 @@ python3 manage.py runserver
 ```
 
 ## ER диаграмма моделей
-https://app.quickdatabasediagrams.com/#/d/YbqEiX  
-(вставить картинку)
+
+![erd](https://user-images.githubusercontent.com/88326901/232877340-a29fc45f-6455-464b-8f51-757c68e695e7.svg)
 
 ## For developers
 
@@ -106,3 +106,21 @@ DJANGO_SUPERUSER_PASSWORD = superuserpassword
 ```
 
 You could input all your creditinal from stdin if you haven't specified settings in enviroment variables. 
+
+### ER diagram generation
+
+You should define enviroment variable for app containing models:
+
+```
+GRAPH_APPS=core,feedback,game,info,users
+```
+
+After you sould run:
+
+```
+python manage.py graph_models -o <filename>.<image extension>
+```
+
+For example: `python manage.py graph_models -o erd.svg`
+
+For more info look at [django extension documentation](https://django-extensions.readthedocs.io/en/latest/graph_models.html#graph-models)

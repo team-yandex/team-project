@@ -153,3 +153,14 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
 class CustomLoginView(LoginView):
     redirect_authenticated_user = True
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        if 'score' in self.request.session:
+            self.request.user.score = self.request.session['score']
+        if 'seen_questions' in self.request.session:
+            for pk in self.request.session['seen_questions']:
+                if not self.request.user.seen_questions.filter(pk=pk).exists():
+                    self.request.user.seen_questions.add(pk)
+        self.request.user.save()
+        return response

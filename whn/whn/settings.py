@@ -27,6 +27,9 @@ IS_ACTIVE = (
 )
 INTERNAL_IPS = os.getenv('INTERNAL_IPS', ['127.0.0.1'])
 
+GRAPH_APPS = os.getenv('GRAPH_APPS', '')
+GRAPH_APPS = GRAPH_APPS.split(',') if GRAPH_APPS else ''
+
 INSTALLED_APPS = [
     'daphne',
     'django.contrib.admin',
@@ -40,10 +43,12 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'core.apps.CoreConfig',
     'feedback.apps.FeedbackConfig',
-    'users.apps.UsersConfig',
     'game.apps.GameConfig',
     'info.apps.InfoConfig',
+    'session.apps.SessionConfig',
+    'users.apps.UsersConfig',
 ]
+
 if DEBUG:
     INSTALLED_APPS.append('debug_toolbar')
 
@@ -56,8 +61,16 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 if DEBUG:
     MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+
+if GRAPH_APPS:
+    INSTALLED_APPS.append('django_extensions')
+    GRAPH_MODELS = {
+        'group_models': True,
+        'app_labels': GRAPH_APPS,
+    }
 
 ROOT_URLCONF = 'whn.urls'
 
@@ -72,6 +85,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'session.context_processors.answer_time',
             ],
         },
     },
@@ -163,6 +177,14 @@ LOGIN_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'users.User'
 
 PAGINATE_BY = 3
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 SCORES = {
     'hard': 15,
