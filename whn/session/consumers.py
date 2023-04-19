@@ -6,10 +6,11 @@ from asgiref.sync import sync_to_async
 from channels.consumer import database_sync_to_async
 import channels.generic.websocket
 from django.utils import timezone
+
+from game.models import Choice
+from game.models import Question
 from session.models import Session
 from whn.settings import ANSWER_BUFFER_SECONDS
-
-from game.models import Choice, Question
 
 
 class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
@@ -110,8 +111,6 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
         await self.channel_layer.group_send(
             self.session_id, {'type': 'connection'}
         )
-        await sync_to_async(self.scope['session'].pop)('question_id')
-        await sync_to_async(self.scope['session'].save)()
         return await super().disconnect(code)
 
     @database_sync_to_async
@@ -142,14 +141,12 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def choose_questions(self, amount):
-        queryset = random.sample(
-            list(
-                Question.objects.published()
-                .filter(complexity=self.session.complexity)
-                .values_list('id', flat=True)
-            ),
-            k=amount,
+        questons = (
+            Question.objects.published()
+            .filter(complexity=self.session.complexity)
+            .values_list('id', flat=True)
         )
+        queryset = random.sample(list(questons), k=min(amount, len(questons)))
         self.questions = queryset
 
     @database_sync_to_async

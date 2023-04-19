@@ -1,10 +1,9 @@
 from django.urls import path
-from session.views import (
-    ConnectSessionView,
-    CreateSessionView,
-    LobbyView,
-    QuestionView,
-)
+
+from session.views import ConnectSessionView
+from session.views import CreateSessionView
+from session.views import LobbyView
+from session.views import QuestionView
 
 
 app_name = 'session'

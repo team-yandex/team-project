@@ -1,11 +1,14 @@
 {% extends "base.html" %}
+{% block title %}О проекте{% endblock %}
 {% block content %}
   <div class="container col-6">
     <div class="card pink-bg mt-3">
       <div class="card-body">
-        <h5 class="card-title">О проекте:</h5>
+        <h5 class="card-title">Проект специально для Академии Яндекс!</h5>
         <p class="card-text">
-          Some quick example text to build on the card title and make up the bulk of the card's content.
+          Всё, что от тебя требуется - находчивость и фантазия! В течение
+          отведённого времени выбери правильный ответ и угадай, что будет дальше.
+          Соревнуйся со своими друзьями в сессии или набирай рейтинг в одиночной игре!
         </p>
         <a href="{% url 'info:index_page' %}" class="btn fst-ans">На главную</a>
       </div>

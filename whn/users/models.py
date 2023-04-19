@@ -2,9 +2,10 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django_cleanup.signals import cleanup_pre_delete
 import sorl
-from sorl.thumbnail import delete, get_thumbnail
+from sorl.thumbnail import delete
+from sorl.thumbnail import get_thumbnail
 
-from .managers import UserManager
+from users.managers import UserManager
 
 
 class User(AbstractUser):

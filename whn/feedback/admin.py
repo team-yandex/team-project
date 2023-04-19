@@ -1,6 +1,8 @@
 from django.contrib import admin
 
-from .models import Feedback, FeedbackAuther, FeedbackFile
+from feedback.models import Feedback
+from feedback.models import FeedbackAuther
+from feedback.models import FeedbackFile
 
 
 class FeedbackAutherInline(admin.TabularInline):
