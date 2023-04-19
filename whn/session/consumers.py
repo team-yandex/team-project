@@ -156,7 +156,7 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def question_by_id(self, id):
-        return Question.objects.published().get(pk=id)
+        return Question.objects.get(pk=id)
 
     @database_sync_to_async
     def get_choices(self, id):

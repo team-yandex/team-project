@@ -2,14 +2,15 @@
 {% load static %}
 {% block title %}Результат{% endblock %}
 {% block content %}
-  <div class="modal modal-sheet position-static d-block py-5"
+  <div class="modal modal-sheet position-static d-block py-1"
        tabindex="-1"
        role="dialog"
        id="modalSheet">
     <div class="modal-dialog" role="document">
       <div class="modal-content rounded-4 shadow lgrey-bg">
         {% if video %}
-          <video autoplay src="{{ video.url }}">
+          <video autoplay src="{{ video.url }}" width="" height="500px">
+            Your browser does not support the video tag.
           </video>
         {% endif %}
         <div class="modal-header border-bottom-0">
@@ -23,8 +24,10 @@
             Неверно
           {% endif %}
         </div>
-        {% if earned != -1 %}
-          <p class="modal-body">Вы заработали {{ earned }} очков!</p>
+        {% if request.user.is_authenticated %}
+          {% if earned != -1 %}
+            <p class="modal-body">Вы заработали {{ earned }} очков!</p>
+          {% endif %}
         {% endif %}
         <div class="modal-footer flex-column border-top-0">
           <a href="{% url 'game:question' %}"

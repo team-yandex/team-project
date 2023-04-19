@@ -4,6 +4,27 @@
 # What happened next?
 
 Угадайте по видео, что будет дальше.
+Проект доступен по адресу: http://whn.hopto.org/  
+
+## Стек технологий
+
+[![Python](https://img.shields.io/badge/-Python-464646?style=flat-square&logo=Python)](https://www.python.org/)
+[![Django](https://img.shields.io/badge/-Django-464646?style=flat-square&logo=Django)](https://www.djangoproject.com/)
+[![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-464646?style=flat-square&logo=PostgreSQL)](https://www.postgresql.org/)
+[![Nginx](https://img.shields.io/badge/-NGINX-464646?style=flat-square&logo=NGINX)](https://nginx.org/ru/)
+[![gunicorn](https://img.shields.io/badge/-gunicorn-464646?style=flat-square&logo=gunicorn)](https://gunicorn.org/)
+[![docker](https://img.shields.io/badge/-Docker-464646?style=flat-square&logo=docker)](https://www.docker.com/)
+[![GitHub%20Actions](https://img.shields.io/badge/-GitHub%20Actions-464646?style=flat-square&logo=GitHub%20actions)](https://github.com/features/actions)
+[![Yandex.Cloud](https://img.shields.io/badge/-Yandex.Cloud-464646?style=flat-square&logo=Yandex.Cloud)](https://cloud.yandex.ru/)
+
+- Python 3.7
+- Django 3.2
+- PostgreSQL
+- Nginx
+- Gunicorn
+- Docker, Docker Hub
+- GitHubActions(CI/CD)
+- JS & jQuery
 
 ## Quick start
 
@@ -35,15 +56,29 @@ source venv/bin/activate
 ```
 
 ### Install dependencies:
-Перейти в папку requirements: 
+Go to requirements: 
 ```bash
 cd requirements
 ```
-- Основной - для запуска сервера: ```pip install -r requirements-prod.txt```
-- Дополнительный - для тестов: ```pip install -r requirements-test.txt```
-- Дополнительный - для разработки: ```pip install -r requirements-dev.txt``` 
+- master - to run server: ```pip install -r requirements-prod.txt```
+- additional - for test: ```pip install -r requirements-test.txt```
+- additional - for development: ```pip install -r requirements-dev.txt``` 
+
+Also you need Redis on your machine to run project:
+[Install Redis](https://redis.io/docs/getting-started/installation/)
+
+For example, in Arch Linux:
+```bash
+sudo pacman -S redis
+sudo systemctl enable --now redis.service
+```
 
 ### Configure
+
+You have to migrate your database:
+```bash
+python whn/manage.py migrate
+```
 
 You should use dotenv to configure settings. Example:
 
@@ -72,9 +107,56 @@ Mac, Linux:
 python3 manage.py runserver
 ```
 
-## ER диаграмма моделей
+## Запуск проекта в Docker контейнере
 
-![erd](https://user-images.githubusercontent.com/88326901/233119504-d27abdde-dbeb-4ad8-a94d-32a1231b69ae.svg
+- Установите Docker.
+
+Параметры запуска описаны в файлах docker-compose.yml и nginx.conf которые находятся в директории infra/
+
+- Запустите docker compose:
+
+```bash
+docker-compose up -d --build
+```  
+
+  > После сборки появляются 3 контейнера:
+  >
+  > 1. контейнер базы данных db
+  > 2. контейнер приложения backend
+  > 3. контейнер web-сервера nginx
+  >
+
+```bash
+docker-compose exec backend python manage.py migrate
+```
+
+- Запустите процесс загрузки ингредиентов:
+
+```bash
+docker-compose exec backend python manage.py load_ingrs
+```
+
+- Запустите процесс загрузки тегов:
+
+```bash
+docker-compose exec backend python manage.py load_tags
+```
+
+- Создайте суперпользователя:
+
+```bash
+docker-compose exec backend python manage.py createsuperuser
+```
+
+- Запустите процесс сбора статики:
+
+```bash
+docker-compose exec backend python manage.py collectstatic --no-input
+```
+
+## ER diagram
+
+![erd](https://user-images.githubusercontent.com/88326901/233119504-d27abdde-dbeb-4ad8-a94d-32a1231b69ae.svg)
 
 ## For developers
 

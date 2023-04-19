@@ -2,8 +2,17 @@
 {% block title %}Поиск{% endblock %}
 {% block content %}
   <div class="container my-5">
-    <a class="btn btn-outline-primary btn-lg d-grid gap-2 mx-auto"
-       href="{% url 'game:question' %}"
-       role="button">Поиск вопроса</a>
+    <div class="card pink-bg mt-3">
+      <div class="card-body">
+        <h5 class="card-title">Одиночная игра</h5>
+        <p class="card-text">
+          В течение отведённого времени выбери правильный ответ и угадай, что будет дальше.
+        </p>
+        {% if request.user.is_authenticated %}
+          <p class="card-text">Ваш текущий счет: {{ request.user.score }}</p>
+        {% endif %}
+        <a href="{% url 'game:question' %}" class="btn fst-ans">Поиск вопроса</a>
+      </div>
+    </div>
   </div>
 {% endblock content %}
