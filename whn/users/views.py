@@ -3,9 +3,11 @@ from datetime import timedelta
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.signals import user_logged_in
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
+from django.dispatch import receiver
 from django.http import HttpResponseGone
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
@@ -154,13 +156,11 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 class CustomLoginView(LoginView):
     redirect_authenticated_user = True
 
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        if 'score' in self.request.session:
-            self.request.user.score = self.request.session['score']
-        if 'seen_questions' in self.request.session:
-            for pk in self.request.session['seen_questions']:
-                if not self.request.user.seen_questions.filter(pk=pk).exists():
-                    self.request.user.seen_questions.add(pk)
-        self.request.user.save()
-        return response
+
+@receiver(user_logged_in)
+def restore_user_from_session(sender, user, request, **kwargs):
+    if 'seen_questions' in request.session:
+        for pk in request.session['seen_questions']:
+            if not user.seen_questions.filter(pk=pk).exists():
+                user.seen_questions.add(pk)
+    user.save()
