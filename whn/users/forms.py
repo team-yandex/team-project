@@ -1,7 +1,7 @@
 from django.contrib.auth import forms
 
 from core.forms import BootstrapFormMixin
-from .models import User
+from users.models import User
 
 
 class UserCreationForm(BootstrapFormMixin, forms.UserCreationForm):

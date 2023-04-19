@@ -94,3 +94,19 @@ footer {
   border-bottom: 2px outset #AAAAAA;
 }
 
+
+button.btn-ans > label {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+#timer {
+  background: white;
+  padding: 5px;
+  text-align: center;
+  margin: auto;
+  border-radius: 10px;
+  max-width: 40px;
+  font-size: 20px;
+}

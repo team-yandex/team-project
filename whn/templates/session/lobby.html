@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Сессия{% endblock %}
+{% block content %}
+  <div id="container" class="container col-6 mt-3">
+    <h1 id="owner">Владелец: {{ request.session.owner }}</h1>
+    <h2 id="session_id">
+      <span class="badge bg-secondary">{{ request.session.session_token }}</span>
+    </h2>
+    <ul id="user-list" class="list-group">
+    </ul>
+    <br />
+    {% if request.session.owner == request.user.username %}
+      <button id="start" class="btn pink-bg">Начать игру</button>
+    {% endif %}
+    <h4 class="mt-5">
+      <span class="badge badge-warning">
+        Ни в коем случае не перезагружайте страницу во время игры!
+      </span>
+    </h4>
+  </div>
+{% endblock %}
+{% block scripts %}
+  {% if request.session.owner == request.user.username %}
+    {{ request.user.id|json_script:"user_id" }}
+  {% endif %}
+  <script src="{% static 'js/session/lobby.js' %}"></script>
+{% endblock %}

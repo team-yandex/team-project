@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Просмотрено{% endblock %}
+{% block content %}
+  <div class="container col-6 mt-3">
+    <div class="card pink-bg mt-3">
+      <div class="card-body">
+        <h2 class="card-title">Вы уже видели этот вопрос!</h2>
+        <a href="{% url 'info:index_page' %}" class="btn btn-primary">На главную</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,7 +1,9 @@
 from django import forms
 
 from core.forms import BootstrapFormMixin
-from .models import Feedback, FeedbackAuther, FeedbackFile
+from feedback.models import Feedback
+from feedback.models import FeedbackAuther
+from feedback.models import FeedbackFile
 
 
 class FeedbackAutherForm(BootstrapFormMixin, forms.ModelForm):

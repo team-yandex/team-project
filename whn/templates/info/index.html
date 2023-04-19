@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-  <div class="container col-6 pt-3">
+  <div class="container col-6 pt-3 sea-bg">
     <div class="card">
       <img src="{% static 'img/mqdefault.jpg' %}"
            class="card-img-top"
@@ -33,17 +33,35 @@
                           data-bs-dismiss="modal"
                           aria-label="Close"></button>
                 </div>
-                <div class="modal-body">Вам стоит зарегистрироваться!</div>
+                <div class="modal-body">Ты прав!</div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Нет, спасибо</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    {% if not user.is_authenticated %}
+                      Нет, спасибо
+                    {% else %}
+                      Хорошо
+                    {% endif %}
+                  </button>
                   <button type="button" class="btn fth-ans">
-                    <a class="nav-link" href="{% url 'users:login' %}">Давай!</a>
+                    {% if not user.is_authenticated %}
+                      <a class="nav-link" href="{% url 'users:login' %}">Зарегистрироваться!</a>
+                    {% else %}
+                      <a class="nav-link" href="{% url 'game:single' %}">В игру!</a>
+                    {% endif %}
                   </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        {% if not user.is_authenticated %}
+          <div class="card pink-bg mt-3">
+            <div class="card-body py-3">
+              <h2 class="card-title">Заинтересовало?</h2>
+              <a href="{% url 'users:sign_up' %}" class="btn btn-primary">Зарегистрироваться!</a>
+            </div>
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>
