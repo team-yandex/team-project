@@ -51,9 +51,14 @@ class QuestionView(django.views.generic.UpdateView):
     def form_valid(self, form):
         if 'question_id' in self.request.session:
             self.request.session.pop('question_id')
-        start_datetime = datetime.datetime.fromisoformat(
-            self.request.session['start_datetime']
-        )
+        if 'start_datetime' in self.request.session:
+            start_datetime = datetime.datetime.fromisoformat(
+                self.request.session['start_datetime']
+            )
+        else:
+            raise django.http.HttpResponseBadRequest(
+                'Missing data for proper work'
+            )
         end_datetime = start_datetime + datetime.timedelta(
             seconds=self.object.climax_second
             + django.conf.settings.ANSWER_BUFFER_SECONDS
@@ -66,11 +71,6 @@ class QuestionView(django.views.generic.UpdateView):
             if self.request.user.is_authenticated:
                 self.request.user.score += self.object.score
                 self.request.user.save()
-            else:
-                if self.request.session.get('score') is not None:
-                    self.request.session['score'] += self.object.score
-                else:
-                    self.request.session['score'] = self.object.score
             return django.shortcuts.render(
                 self.request,
                 'game/result.html',
@@ -88,7 +88,9 @@ class QuestionView(django.views.generic.UpdateView):
 
     def form_invalid(self, form):
         return django.shortcuts.render(
-            self.request, 'game/result.html', context={'success': False}
+            self.request,
+            'game/result.html',
+            context={'success': False, 'earned': -1},
         )
 
 
