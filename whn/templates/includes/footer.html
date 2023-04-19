@@ -1,0 +1,18 @@
+<footer class="pink-bg text-center text-gray">
+  <div class="container p-4 pb-0"></div>
+  <div class="text-center p-3">
+    <span class="mb-3 mb-md-0 text-muted">© <span id="copyright-year"><noscript>{% now "Y" %}</noscript></span> whn, Inc</span>
+    <p>Надеюсь, вам понравится!</p>
+  </div>
+  <script>
+    const SECONDS = 1000;
+    const MINUTES = 60;
+    const HOURS = 60;
+    const DAY = 24;
+    var server_datetime = new Date({% now "U" %} * SECONDS);
+    var local_datetime = new Date();
+    var hours_delta = Math.abs(local_datetime - server_datetime) / SECONDS / MINUTES / HOURS / DAY;
+    var datetime = hours_delta > 23 ? server_datetime : local_datetime;
+    document.getElementById("copyright-year").innerHTML = datetime.getFullYear();
+  </script>
+</footer>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta name="description" content="whn"/>
+    <meta name="keywords" content="game,whn,minecraft,cats"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>
+      {% block title %}Тайтл не подвезли :({% endblock %}
+    </title>
+    {% include 'includes/head.html' %}
+  </head>
+  <body class="sea-bg">
+    {% include 'includes/header.html' %}
+    <main>
+      {% block content %}Контент не завезли{% endblock %}
+    </main>
+    {% include 'includes/footer.html' %}
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.4.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/popper.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

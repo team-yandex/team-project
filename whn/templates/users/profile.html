@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Личный кабинет{% endblock %}
+{% block content %}
+  <div class="container">
+    <h1 class="text-center">Профиль {{ user.username }}:</h1>
+    {% with "Сохранить" as button_text %}
+      {% include 'includes/form.html' %}
+    {% endwith %}
+    <div class="form-group col-sm-5 mx-auto mb-2">
+      <p>
+        <a class="w-50 btn btn-outline-info btn-lg d-grid gap-2 mx-auto"
+           role="button"
+           href="{% url 'users:password_change' %}">Изменить пароль</a>
+      </p>
+    </div>
+  </div>
+{% endblock %}

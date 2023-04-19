@@ -7,7 +7,23 @@ exclude = '''
   | __pycache__
   | migrations
   | venv
-  | /ya/manage.py
+  | /whn/manage.py
   | \.github
 )/
 '''
+
+[tool.djlint]
+profile = 'django'
+max_line_length = 79
+indent = 2
+use_gitignore = true
+extend_exclude = 'email_texts'
+format_attribute_template_tags = true
+
+[tool.isort]
+py_version = 39
+skip = ['*/migrations', '.git', '.github', '__pycache__', '*/migrations/', 'venv/']
+profile = 'google'
+known_first_party = ['core','feedback','game','info','session', 'users']
+lines_after_imports = 2
+skip_glob = '*/migrations'

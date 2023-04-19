@@ -1,0 +1,112 @@
+:root {
+  --sea-color: #94D1C9;
+  --pink-color: #F6BFBF;
+
+  --fst-ans: #AC9393;
+  --scd-ans: #00A2FF;
+  --trd-ans: #D35F5F;
+  --fth-ans: #FFD42A;
+  --correct: #76B76B;
+}
+
+* {
+  font-family: Roboto, sans-serif;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: #685D92;
+  height: 70px;
+  max-height: 7vh;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+footer {
+  flex-shrink: 0;
+}
+
+.fst-ans {
+  background: var(--fst-ans);
+}
+
+.scd-ans {
+  background: var(--scd-ans);
+}
+
+.trd-ans {
+  background: var(--trd-ans);
+}
+
+.fth-ans {
+  background: var(--fth-ans);
+}
+
+.fst-ans,
+.scd-ans,
+.trd-ans {
+  color: white;
+}
+
+.ans-box :where(.fst-ans, .scd-ans, .trd-ans, .fth-ans) {
+  flex-basis: 45%;
+  margin: 2px;
+}
+
+.ans-box :where(.fst-ans, .scd-ans, .trd-ans, .fth-ans):hover {
+  background: var(--correct);
+  color: white;
+}
+
+.ans-box {
+  flex-wrap: wrap;
+}
+
+.sea-bg {
+  background: var(--sea-color);
+}
+
+.pink-bg {
+  background: var(--pink-color);
+}
+
+.mono {
+  font-family: 'Roboto Mono', monospace;
+}
+
+.lgrey-bg {
+  background: lightgrey;
+}
+
+.btn-ans,
+.btn-ans:hover {
+  border-right: 2px outset #AAAAAA;
+  border-bottom: 2px outset #AAAAAA;
+}
+
+
+button.btn-ans > label {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+#timer {
+  background: white;
+  padding: 5px;
+  text-align: center;
+  margin: auto;
+  border-radius: 10px;
+  max-width: 40px;
+  font-size: 20px;
+}
