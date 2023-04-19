@@ -74,7 +74,7 @@ python3 manage.py runserver
 
 ## ER диаграмма моделей
 
-![erd](https://user-images.githubusercontent.com/88326901/232877340-a29fc45f-6455-464b-8f51-757c68e695e7.svg)
+![erd](https://user-images.githubusercontent.com/88326901/233119504-d27abdde-dbeb-4ad8-a94d-32a1231b69ae.svg
 
 ## For developers
 
