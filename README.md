@@ -3,9 +3,11 @@
 ![](https://img.shields.io/badge/python-3.9-brightgreen)
 # What happened next?
 
-Угадайте по видео, что будет дальше.
+#### Угадайте по видео, что будет дальше.
 
-## Quick start
+## Сайт доступен по адресу: http://whn.hopto.org/
+
+## Как развернуть проект
 
 ### Clone the repository:
 ```bash
