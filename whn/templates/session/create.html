@@ -1,6 +1,10 @@
 {% extends "base.html" %}
+{% block title %}Создание сессии{% endblock %}
 {% block content %}
-  {% with 'Создать сессию' as button_text %}
-    {% include 'includes/form.html' %}
-  {% endwith %}
+  <div class="container col-6 mt-3">
+    <h2>Создать сессию</h2>
+    {% with 'Создать сессию' as button_text %}
+      {% include 'includes/form.html' %}
+    {% endwith %}
+  </div>
 {% endblock %}

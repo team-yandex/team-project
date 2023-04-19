@@ -1,12 +1,17 @@
 from django.conf import settings
 from django.contrib import messages
 from django.core.mail import send_mail
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
+from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.views.generic import TemplateView
 
-from .forms import FeedbackAutherForm, FeedbackFileForm, FeedbackForm
-from .models import Feedback, FeedbackAuther, FeedbackFile
+from feedback.forms import FeedbackAutherForm
+from feedback.forms import FeedbackFileForm
+from feedback.forms import FeedbackForm
+from feedback.models import Feedback
+from feedback.models import FeedbackAuther
+from feedback.models import FeedbackFile
 
 
 class FeedbackView(TemplateView):

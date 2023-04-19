@@ -7,7 +7,6 @@ import django.urls
 import django.utils
 import django.views.generic
 
-
 import game.forms
 import game.models
 

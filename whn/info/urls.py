@@ -1,5 +1,7 @@
 from django.urls import path
-from info.views import AboutView, IndexView
+
+from info.views import AboutView
+from info.views import IndexView
 
 
 app_name = 'info'

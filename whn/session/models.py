@@ -1,17 +1,16 @@
 from uuid import uuid4
 
-from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db.models import (
-    CASCADE,
-    CharField,
-    ForeignKey,
-    IntegerChoices,
-    ManyToManyField,
-    Model,
-    PositiveSmallIntegerField,
-    TextChoices,
-    UUIDField,
-)
+from django.core.validators import MaxValueValidator
+from django.core.validators import MinValueValidator
+from django.db.models import CASCADE
+from django.db.models import CharField
+from django.db.models import ForeignKey
+from django.db.models import IntegerChoices
+from django.db.models import ManyToManyField
+from django.db.models import Model
+from django.db.models import PositiveSmallIntegerField
+from django.db.models import TextChoices
+from django.db.models import UUIDField
 
 from users.models import User
 

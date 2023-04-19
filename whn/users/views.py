@@ -9,18 +9,21 @@ from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.dispatch import receiver
 from django.http import HttpResponseGone
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
+from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import DetailView, FormView, ListView, TemplateView
+from django.views.generic import DetailView
+from django.views.generic import FormView
+from django.views.generic import ListView
+from django.views.generic import TemplateView
 
-from .forms import (
-    UserChangeForm,
-    UserCreationForm,
-)
-from .models import User
+from users.forms import UserChangeForm
+from users.forms import UserCreationForm
+from users.models import User
 
 
 class SignUpView(FormView):
