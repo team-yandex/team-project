@@ -83,18 +83,18 @@ class Question(django.db.models.Model):
     ):
         if (
             update_fields is None
-            or Question.climax_video.field.name in update_fields
-        ):
-            super().save(force_insert, force_update, using, update_fields)
-            self.save_climax_video()
-        if (
-            update_fields is None
             or Question.complexity.field.name in update_fields
         ):
             complexity = {1: 'easy', 2: 'medium', 3: 'hard'}[self.complexity]
             self.score = django.conf.settings.SCORES[complexity]
             if update_fields is not None:
                 update_fields.append(Question.score.field.name)
+        if (
+            update_fields is None
+            or Question.climax_video.field.name in update_fields
+        ):
+            super().save(force_insert, force_update, using, update_fields)
+            self.save_climax_video()
         super().save(force_insert, force_update, using, update_fields)
         if self.is_published:
             unique_choices_count = (
