@@ -75,13 +75,7 @@ sudo systemctl enable --now redis.service
 
 ### Configure
 
-You have to migrate your database:
-```bash
-python whn/manage.py migrate
-```
-
 You should use dotenv to configure settings. Example:
-
 ```
 SECRET_KEY = VERYSECRETKEY
 DEBUG = false
@@ -94,9 +88,20 @@ You can use example dotenv:
 cp example.env .env
 ```
 
+You have to migrate your database:
+```bash
+python whn/manage.py migrate
+```
+
+To add data and videos go to [Initdata](####initdata) section
+
+
 ### Launch:
 
 #### Django server:
+```bash
+cd whn
+```
 
 Windows:
 ```bash
@@ -110,6 +115,7 @@ python3 manage.py runserver
 ## Запуск проекта в Docker контейнере
 
 - Установите Docker.
+- (Далее) Установите драйвер psycopg2-binary внутри контейнера (Для Postgres)
 
 Параметры запуска описаны в файлах docker-compose.yml и nginx.conf которые находятся в директории infra/
 
@@ -170,10 +176,12 @@ If you want to populate your fresh db with fixtures and superuser creditinals yo
 
 Windows:
 ```bash
+cd whn
 python manage.py initdata
 ```
 Mac, Linux:
 ```bash
+cd whn
 python3 manage.py initdata
 ```
 
