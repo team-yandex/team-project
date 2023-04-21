@@ -69,6 +69,12 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
                 await self.send(
                     text_data=json.dumps({'success': 'Вы не успели!'})
                 )
+        elif event == 'timer-begin':
+            # prevents time loss within slow internet connection
+            await sync_to_async(self.scope['session'].__setitem__)(
+                'start_datetime', str(timezone.now())
+            )
+            await sync_to_async(self.scope['session'].save)()
 
         elif event == 'next':
             self.counter += 1
@@ -94,10 +100,6 @@ class LobbyConsumer(channels.generic.websocket.AsyncWebsocketConsumer):
                 }
             )
         )
-        await sync_to_async(self.scope['session'].__setitem__)(
-            'start_datetime', str(timezone.now())
-        )
-        await sync_to_async(self.scope['session'].save)()
         await sleep(instance.climax_second + ANSWER_BUFFER_SECONDS)
         await self.send(text_data=json.dumps({'end': instance.video.url}))
 

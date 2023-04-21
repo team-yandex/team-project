@@ -29,7 +29,6 @@ questionSocket.onmessage = function(e) {
         const video = document.querySelector('#question-video');
         video.src = data.url;
         var left = document.querySelector('#answer-time').innerText
-        console.log(left, typeof left)
         const p = document.createElement('p');
         p.innerText = left;
         p.setAttribute('id', 'timer');

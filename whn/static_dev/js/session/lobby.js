@@ -33,7 +33,8 @@ socket.onmessage = (message) => {
         $('#container').empty()
         $('#container').append($.parseHTML(response))
         $('#question-video').attr('src', data.video)
-        $('#question-video')[0].load()
+        $('#question-video')[0].load() // hope it really loads syncronously
+        socket.send(JSON.stringify({event: 'timer-begin'}))
 
         for (const choice of data.choices) {
           let btn = $('<button>')
@@ -54,8 +55,8 @@ socket.onmessage = (message) => {
         $('#question-video').on('ended', function() {
           $('#card-body-id').append(p)
           setInterval(function () {
-              p.text(left);
               left -= 1;
+              p.text(left);
           }, 1000)
         })
       }

@@ -17,7 +17,7 @@
 [![GitHub%20Actions](https://img.shields.io/badge/-GitHub%20Actions-464646?style=flat-square&logo=GitHub%20actions)](https://github.com/features/actions)
 [![Yandex.Cloud](https://img.shields.io/badge/-Yandex.Cloud-464646?style=flat-square&logo=Yandex.Cloud)](https://cloud.yandex.ru/)
 
-- Python 3.7
+- Python 3.9
 - Django 3.2
 - PostgreSQL
 - Nginx
@@ -93,7 +93,7 @@ You have to migrate your database:
 python whn/manage.py migrate
 ```
 
-To add data and videos go to [Initdata](####initdata) section
+To add data and videos go to [Initdata](#initdata) section
 
 
 ### Launch:

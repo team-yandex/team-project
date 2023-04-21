@@ -1,6 +1,6 @@
 :root {
   --sea-color: #94D1C9;
-  --pink-color: #F6BFBF;
+  --pink-color: #D3F591;
 
   --fst-ans: #AC9393;
   --scd-ans: #00A2FF;
@@ -24,6 +24,7 @@ body {
 
 header {
   background: #685D92;
+  max-height: 7vh;
 }
 
 main {
