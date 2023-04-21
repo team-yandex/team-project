@@ -148,6 +148,8 @@ docker-compose exec web python manage.py createsuperuser
 docker-compose exec web python manage.py collectstatic --no-input
 ```
 
+- Не забудьте запустить сервер с параметром --settings=whn.settings_prod
+
 ## ER diagram
 
 ![erd](https://user-images.githubusercontent.com/88326901/233119504-d27abdde-dbeb-4ad8-a94d-32a1231b69ae.svg)
