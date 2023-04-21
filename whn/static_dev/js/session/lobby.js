@@ -56,7 +56,7 @@ socket.onmessage = (message) => {
           setInterval(function () {
               p.text(left);
               left -= 1;
-          }, 800)
+          }, 1000)
         })
       }
     })
@@ -65,7 +65,6 @@ socket.onmessage = (message) => {
     $('#timer').remove()
     $('.ans-box').empty()
     $('#question-video').attr('src', data.end)
-    $('#question-video').attr('crossorigin', 'anonymous')
     $('#question-video')[0].load()
     $('#question-video').off('ended')
     $('#question-video')[0].play()
