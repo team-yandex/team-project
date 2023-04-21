@@ -15,9 +15,9 @@ questionSocket.onmessage = function(e) {
         const form = document.querySelector('#card-body-id');
         document.querySelector('#timer').remove()
         const button = document.createElement('a');
-        button.className += 'btn btn-trd';
+        button.className += 'btn btn-lg yellow-bg w-100 mx-0';
         button.innerText = 'Заново';
-        button.href = location.protocol + '//' + location.host + '/game/single/';
+        button.href = location.protocol + '//' + location.host + '/game/question/';
         form.parentNode.appendChild(button);
         form.parentNode.removeChild(form);
         const video = document.querySelector('#question-video');
