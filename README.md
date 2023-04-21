@@ -133,31 +133,19 @@ docker-compose up -d --build
   >
 
 ```bash
-docker-compose exec backend python manage.py migrate
-```
-
-- Запустите процесс загрузки ингредиентов:
-
-```bash
-docker-compose exec backend python manage.py load_ingrs
-```
-
-- Запустите процесс загрузки тегов:
-
-```bash
-docker-compose exec backend python manage.py load_tags
+docker-compose exec web python manage.py migrate
 ```
 
 - Создайте суперпользователя:
 
 ```bash
-docker-compose exec backend python manage.py createsuperuser
+docker-compose exec web python manage.py createsuperuser
 ```
 
 - Запустите процесс сбора статики:
 
 ```bash
-docker-compose exec backend python manage.py collectstatic --no-input
+docker-compose exec web python manage.py collectstatic --no-input
 ```
 
 - Не забудьте запустить сервер с параметром --settings=whn.settings_prod

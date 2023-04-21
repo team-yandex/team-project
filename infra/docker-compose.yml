@@ -1,4 +1,4 @@
-version: '3.3'
+version: "3.3"
 services:
 
   db:
@@ -9,11 +9,10 @@ services:
       - ./.env
 
   web:
-#    image: team
     image: davids0602/team:latest
     restart: always
     ports:
-      - '8000:8000'
+      - "8000:8000"
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
@@ -26,7 +25,7 @@ services:
     container_name: proxy
     image: nginx:1.19.3
     ports:
-      - '80:80'
+      - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - static_value:/var/html/static/
