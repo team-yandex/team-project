@@ -3,6 +3,7 @@ import pathlib
 import django.conf
 import django.core.exceptions
 import django.core.files
+import django.core.files.storage
 import django.core.validators
 import django.db.models
 import moviepy.editor
@@ -89,35 +90,40 @@ class Question(django.db.models.Model):
             self.score = django.conf.settings.SCORES[complexity]
             if update_fields is not None:
                 update_fields.append(Question.score.field.name)
-        if (
-            update_fields is None
-            or Question.climax_video.field.name in update_fields
-        ):
-            super().save(force_insert, force_update, using, update_fields)
+        if update_fields is None or Question.video.field.name in update_fields:
             self.save_climax_video()
         super().save(force_insert, force_update, using, update_fields)
         if self.is_published:
             unique_choices_count = (
-                self.choices.values('label_normilized').distinct().count()
+                self.choices.values(Choice.label_normilized.field.name)
+                .distinct()
+                .count()
             )
             if (
                 self.choices.filter(is_correct=True).count() != 1
                 or unique_choices_count != 4
             ):
                 self.is_published = False
-                super().save()
+                super().save(update_fields=[Question.is_published.field.name])
 
     def save_climax_video(self):
-        video_path = pathlib.Path(self.video.path)
+        video_path = pathlib.Path(self.video.name)
         basename, suffix = video_path.stem, video_path.suffix
         climax_filename = f'{basename}_climax{suffix}'
-        with django.core.files.temp.NamedTemporaryFile(suffix=suffix) as ntf:
-            with moviepy.editor.VideoFileClip(str(video_path)) as video:
+        with django.core.files.temp.NamedTemporaryFile(
+            suffix=suffix
+        ) as video_tempfile, django.core.files.temp.NamedTemporaryFile(
+            suffix=suffix
+        ) as climax_video_tempfile:
+            video_tempfile.write(self.video.read())
+            with moviepy.editor.VideoFileClip(video_tempfile.name) as video:
                 trimmed_video = video.subclip(0, self.climax_second)
-                trimmed_video.write_videofile(ntf.name)
+                trimmed_video.write_videofile(climax_video_tempfile.name)
                 trimmed_video.close()
                 self.climax_video.save(
-                    climax_filename, django.core.files.File(ntf), save=False
+                    climax_filename,
+                    django.core.files.File(climax_video_tempfile),
+                    save=False,
                 )
 
 
