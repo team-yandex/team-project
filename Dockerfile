@@ -9,3 +9,5 @@ RUN pip3 install -r requirements-prod.txt --no-cache-dir
 COPY ./whn .
 
 COPY ./entrypoint.sh .
+
+ENV DJANGO_SETTINGS_MODULE=whn.settings_prod
