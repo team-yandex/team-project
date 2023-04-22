@@ -33,6 +33,15 @@ services:
     restart: always
     depends_on:
       - web
+  
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - "6379:6379"
+    restart: always
+    depends_on:
+      - web
 
 volumes:
   database:
