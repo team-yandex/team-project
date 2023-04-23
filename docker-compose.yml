@@ -5,18 +5,26 @@ services:
     image: postgres:13.0-alpine
     volumes:
       - database:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
     env_file:
       - ./.env
 
   web:
-    image: davids0602/team:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     restart: always
     ports:
       - "8000:8000"
+    entrypoint: /app/entrypoint.sh
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
-    depends_on:
+    links:
+      - redis
       - db
     env_file:
       - ./.env
@@ -31,8 +39,13 @@ services:
       - static_value:/var/html/static/
       - media_value:/var/html/media/
     restart: always
-    depends_on:
-      - web
+  
+  redis:
+    container_name: redis
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    restart: always
 
 volumes:
   database:

@@ -141,7 +141,6 @@ STATIC_ROOT = BASE_DIR / 'static'
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ANSWER_BUFFER_SECONDS = 5
@@ -165,7 +164,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('127.0.0.1', 6379)],
+            'hosts': [(os.getenv('REDIS_URL', '127.0.0.1'), 6379)],
         },
     },
 }
