@@ -125,30 +125,18 @@ python3 manage.py runserver
 docker-compose up -d --build
 ```  
 
-  > После сборки появляются 3 контейнера:
+  > После сборки появляются 4 контейнера:
   >
   > 1. контейнер базы данных db
   > 2. контейнер приложения backend
   > 3. контейнер web-сервера nginx
-  >
-
-```bash
-docker-compose exec web python manage.py migrate
-```
+  > 4. контейнер redis nginx
 
 - Создайте суперпользователя:
 
 ```bash
 docker-compose exec web python manage.py createsuperuser
 ```
-
-- Запустите процесс сбора статики:
-
-```bash
-docker-compose exec web python manage.py collectstatic --no-input
-```
-
-- Не забудьте запустить сервер с параметром --settings=whn.settings_prod
 
 ## ER diagram
 
