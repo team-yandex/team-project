@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
+{% block title %}Главная{% endblock %}
 {% block content %}
-  <div class="container col-6 pt-3 sea-bg">
-    <div class="card">
+  <div class="container col-12 col-lg-6 col-md-8 pt-3 sea-bg">
+    <div class="card mt-3 mb-3">
       <img src="{% static 'img/mqdefault.jpg' %}"
            class="card-img-top"
            alt="..."
@@ -33,7 +34,7 @@
                           data-bs-dismiss="modal"
                           aria-label="Close"></button>
                 </div>
-                <div class="modal-body">Ты прав!</div>
+                <div class="modal-body">Скоро ты сможешь сыграть с друзьями!</div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     {% if not user.is_authenticated %}
@@ -55,7 +56,7 @@
           </div>
         </div>
         {% if not user.is_authenticated %}
-          <div class="card pink-bg mt-3">
+          <div class="card yellow-bg mt-3">
             <div class="card-body py-3">
               <h2 class="card-title">Заинтересовало?</h2>
               <a href="{% url 'users:sign_up' %}" class="btn btn-primary">Зарегистрироваться!</a>
